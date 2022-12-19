@@ -7,9 +7,9 @@
 
     <fragment
         android:id="@+id/navigation_checklists"
-        android:name="com.example.motionnotes.CheckListFragment"
+        android:name="com.example.motionnotes.CheckListsFragment"
         android:label="Checklists"
-        tools:layout="@layout/fragment_check_list" />
+        tools:layout="@layout/fragment_check_lists" />
 
     <fragment
         android:id="@+id/navigation_notes"
@@ -19,7 +19,7 @@
 
     <fragment
         android:id="@+id/navigation_events"
-        android:name="com.example.motionnotes.EventFragment"
+        android:name="com.example.motionnotes.EventsFragment"
         android:label="Events"
-        tools:layout="@layout/fragment_event" />
+        tools:layout="@layout/fragment_events" />
 </navigation>
