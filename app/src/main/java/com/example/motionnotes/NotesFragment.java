@@ -7,6 +7,10 @@ import androidx.fragment.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.Toast;
+
+import java.util.List;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -14,6 +18,10 @@ import android.view.ViewGroup;
  * create an instance of this fragment.
  */
 public class NotesFragment extends Fragment {
+
+    private Button btn_addNote;
+    private Button btn_showNotes;
+    private Button btn_deleteNote;
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -56,9 +64,52 @@ public class NotesFragment extends Fragment {
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+
+        View fragmentView=inflater.inflate(R.layout.fragment_notes, container, false);
+
+        btn_addNote=fragmentView.findViewById(R.id.btn_addNote);
+        btn_addNote.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Note note;
+                try{
+                    note=new Note(-1,"Note content 2",1);
+                    Toast.makeText(fragmentView.getContext(),note.toString(), Toast.LENGTH_SHORT).show();
+                } catch (Exception e){
+                    note=new Note(-1,"error",-1);
+                    Toast.makeText(fragmentView.getContext(), "Error adding note",Toast.LENGTH_SHORT).show();
+                }
+
+                DataBaseHelper dataBaseHelper = new DataBaseHelper(fragmentView.getContext());
+                boolean success = dataBaseHelper.addNote(note);
+
+                Toast.makeText(fragmentView.getContext(),"Success= "+success,Toast.LENGTH_SHORT);
+            }
+        });
+
+        btn_showNotes=fragmentView.findViewById(R.id.btn_showAllNotes);
+        btn_showNotes.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                DataBaseHelper dataBaseHelper = new DataBaseHelper(fragmentView.getContext());
+                List<Note> allNotes=dataBaseHelper.getAllNotes();
+                Toast.makeText(fragmentView.getContext(),allNotes.toString(),Toast.LENGTH_SHORT).show();
+            }
+        });
+
+        btn_deleteNote=fragmentView.findViewById(R.id.btn_addNote);
+        btn_deleteNote.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Note note=new Note(1,"sadas",0);
+                DataBaseHelper dataBaseHelper = new DataBaseHelper(fragmentView.getContext());
+                Boolean success=dataBaseHelper.deleteNote(note);
+                Toast.makeText(fragmentView.getContext(),"Success= "+success,Toast.LENGTH_SHORT);
+            }
+        });
+
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_notes, container, false);
+        return fragmentView;
     }
 }
