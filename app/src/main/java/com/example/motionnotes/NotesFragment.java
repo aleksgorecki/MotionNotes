@@ -3,10 +3,22 @@ package com.example.motionnotes;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
+import androidx.navigation.NavController;
+import androidx.navigation.Navigation;
+import androidx.navigation.fragment.NavHostFragment;
+import androidx.navigation.ui.NavigationUI;
 
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
+
+import com.example.motionnotes.databinding.ActivityMainBinding;
+import com.google.android.material.navigation.NavigationView;
+
+import java.util.List;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -14,6 +26,10 @@ import android.view.ViewGroup;
  * create an instance of this fragment.
  */
 public class NotesFragment extends Fragment {
+
+    ImageView iv_addButton;
+
+    List<Note> noteList;
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -56,9 +72,21 @@ public class NotesFragment extends Fragment {
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        View fragmentView=inflater.inflate(R.layout.fragment_notes, container, false);
+
+        //DataBaseHelper dataBaseHelper = new DataBaseHelper(fragmentView.getContext());
+        //noteList=dataBaseHelper.getAllNotes();
+
+        iv_addButton=fragmentView.findViewById(R.id.iv_add_notes);
+        iv_addButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                //GO TO NOTE_EDIT FRAGMENT
+            }
+        });
+
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_notes, container, false);
+        return fragmentView;
     }
 }

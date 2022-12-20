@@ -1,5 +1,7 @@
 package com.example.motionnotes;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
@@ -7,6 +9,8 @@ import androidx.fragment.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
+import android.widget.TextView;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -14,6 +18,9 @@ import android.view.ViewGroup;
  * create an instance of this fragment.
  */
 public class NoteFragment extends Fragment {
+
+    ImageView iv_deleteButton;
+    TextView tv_content;
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -56,9 +63,53 @@ public class NoteFragment extends Fragment {
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        View fragmentView=inflater.inflate(R.layout.fragment_note, container, false);
+
+        //TODO odkometować po meargu z bazą
+        //dataBaseHelper = new DataBaseHelper(fragmentView.getContext());
+
+        tv_content=fragmentView.findViewById(R.id.tv_content_note);
+
+        //Note note=dataBaseHelper.getNote(id);
+        //String text=note.getContent();
+        //tv_content.setText(text);
+
+        iv_deleteButton=fragmentView.findViewById(R.id.iv_delete_note);
+        iv_deleteButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                //CONFIRMATION POPUP
+                AlertDialog.Builder builder=new AlertDialog.Builder(fragmentView.getContext());
+                builder.setCancelable(true);
+                builder.setTitle("USUWANIE NOTATKI");
+                builder.setMessage("Napewno chcesz usunąć?");
+                builder.setPositiveButton("TAK", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        //DELETION
+                        //if(dataBaseHelper.deleteNote(note)){
+                        //  Toast.makeToast(fragmentView.getContext(),"USUNIĘTO",Toast.SHORT_LENGTH);
+                        //  GO TO NOTES FRAGMENT
+                        //}
+                        //else {
+                        // Toast.makeToast(fragmentView.getContext(),"USUWANIE NIEUDANE",Toast.SHORT_LENGTH);
+                        //}
+                    }
+                });
+                builder.setNegativeButton("NIE", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+
+                    }
+                });
+                AlertDialog dialog=builder.create();
+                dialog.show();
+            }
+        });
+
+
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_note, container, false);
+        return fragmentView;
     }
 }
