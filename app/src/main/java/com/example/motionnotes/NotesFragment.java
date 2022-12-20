@@ -3,21 +3,17 @@ package com.example.motionnotes;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
-import androidx.fragment.app.FragmentTransaction;
-import androidx.navigation.NavController;
-import androidx.navigation.Navigation;
-import androidx.navigation.fragment.NavHostFragment;
-import androidx.navigation.ui.NavigationUI;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 
-import com.example.motionnotes.databinding.ActivityMainBinding;
-import com.google.android.material.navigation.NavigationView;
-
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -27,9 +23,13 @@ import java.util.List;
  */
 public class NotesFragment extends Fragment {
 
-    ImageView iv_addButton;
+    private ImageView iv_addButton;
 
-    List<Note> noteList;
+    private List<Note> noteList = new ArrayList<Note>();
+
+    private RecyclerView recyclerView;
+    private RecyclerView.Adapter mAdapter;
+    private RecyclerView.LayoutManager layoutManager;
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -77,6 +77,14 @@ public class NotesFragment extends Fragment {
 
         //DataBaseHelper dataBaseHelper = new DataBaseHelper(fragmentView.getContext());
         //noteList=dataBaseHelper.getAllNotes();
+        fillNoteList();
+        Log.d("NotesFragment","OnCreate: "+noteList.toString());
+
+        recyclerView=fragmentView.findViewById(R.id.rv_list_notes);
+        layoutManager = new LinearLayoutManager(fragmentView.getContext());
+        recyclerView.setLayoutManager(layoutManager);
+        mAdapter=new NoteAdapter(noteList);
+        recyclerView.setAdapter(mAdapter);
 
         iv_addButton=fragmentView.findViewById(R.id.iv_add_notes);
         iv_addButton.setOnClickListener(new View.OnClickListener() {
@@ -88,5 +96,23 @@ public class NotesFragment extends Fragment {
 
         // Inflate the layout for this fragment
         return fragmentView;
+    }
+
+    void fillNoteList(){
+        noteList.add(new Note(1,"Note 1 text",0));
+        noteList.add(new Note(2,"Note 2 text",1));
+        noteList.add(new Note(3,"Note 3 text",2));
+        noteList.add(new Note(4,"Note 4 text",3));
+        noteList.add(new Note(5,"Note 5 text",4));
+        noteList.add(new Note(6,"Note 6 text",5));
+        noteList.add(new Note(7,"Note 7 text",6));
+        noteList.add(new Note(8,"Note 8 text",7));
+        noteList.add(new Note(9,"Note 9 text",8));
+        noteList.add(new Note(10,"Note 10 text",9));
+        noteList.add(new Note(11,"Note 11 text",10));
+        noteList.add(new Note(12,"Note 12 text",11));
+        noteList.add(new Note(13,"Note 13 text",12));
+        noteList.add(new Note(14,"Note 14 text",13));
+        noteList.add(new Note(15,"Note 15 text",14));
     }
 }
