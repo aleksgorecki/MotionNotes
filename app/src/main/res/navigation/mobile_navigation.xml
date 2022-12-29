@@ -18,6 +18,18 @@
         tools:layout="@layout/fragment_notes" />
 
     <fragment
+        android:id="@+id/navigation_note_edit"
+        android:name="com.example.motionnotes.NoteEditFragment"
+        android:label="NoteEdit"
+        tools:layout="@layout/fragment_note_edit" />
+
+    <fragment
+        android:id="@+id/navigation_note"
+        android:name="com.example.motionnotes.NoteFragment"
+        android:label="Note"
+        tools:layout="@layout/fragment_note" />
+
+    <fragment
         android:id="@+id/navigation_events"
         android:name="com.example.motionnotes.EventsFragment"
         android:label="Events"

@@ -85,6 +85,7 @@ public class NoteEditFragment extends Fragment {
                 //if(dataBaseHelper.updateNote(note)){
                 //  makeToast(fragmentView.getContext(),"ZMIANY ZAPISANE",Toast.SHORT_LENGTH);
                 //  GO TO NOTE FRAGMENT
+                //  Navigation.findNavController(NoteEditFragment.this.getActivity(),R.id.nav_host_fragment_activity_main).navigate(R.id.navigation_note);
                 //}
                 //else {
                 // makeToast(fragmentView.getContext(),"EDYCJA NIEUDANA",Toast.SHORT_LENGTH);
@@ -108,6 +109,7 @@ public class NoteEditFragment extends Fragment {
                         //if(dataBaseHelper.deleteNote(note)){
                         //  Toast.makeToast(fragmentView.getContext(),"USUNIĘTO",Toast.SHORT_LENGTH);
                         //  GO TO NOTES FRAGMENT
+                        //  Navigation.findNavController(NoteEditFragment.this.getActivity(),R.id.nav_host_fragment_activity_main).navigate(R.id.navigation_notes);
                         //}
                         //else {
                         // Toast.makeToast(fragmentView.getContext(),"USUWANIE NIEUDANE",Toast.SHORT_LENGTH);

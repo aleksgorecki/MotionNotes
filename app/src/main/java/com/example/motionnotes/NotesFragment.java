@@ -3,6 +3,10 @@ package com.example.motionnotes;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.navigation.NavDirections;
+import androidx.navigation.Navigation;
+import androidx.navigation.fragment.NavHostFragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -11,6 +15,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+
+import com.google.android.material.navigation.NavigationView;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -74,11 +80,9 @@ public class NotesFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View fragmentView=inflater.inflate(R.layout.fragment_notes, container, false);
-
         //DataBaseHelper dataBaseHelper = new DataBaseHelper(fragmentView.getContext());
         //noteList=dataBaseHelper.getAllNotes();
         fillNoteList();
-        Log.d("NotesFragment","OnCreate: "+noteList.toString());
 
         recyclerView=fragmentView.findViewById(R.id.rv_list_notes);
         layoutManager = new LinearLayoutManager(fragmentView.getContext());
@@ -91,6 +95,7 @@ public class NotesFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 //GO TO NOTE_EDIT FRAGMENT
+                Navigation.findNavController(NotesFragment.this.getActivity(),R.id.nav_host_fragment_activity_main).navigate(R.id.navigation_note_edit);
             }
         });
 

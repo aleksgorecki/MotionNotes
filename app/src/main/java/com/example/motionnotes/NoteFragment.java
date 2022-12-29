@@ -91,6 +91,7 @@ public class NoteFragment extends Fragment {
                         //if(dataBaseHelper.deleteNote(note)){
                         //  Toast.makeToast(fragmentView.getContext(),"USUNIĘTO",Toast.SHORT_LENGTH);
                         //  GO TO NOTES FRAGMENT
+                        //  Navigation.findNavController(NoteFragment.this.getActivity(),R.id.nav_host_fragment_activity_main).navigate(R.id.navigation_notes);
                         //}
                         //else {
                         // Toast.makeToast(fragmentView.getContext(),"USUWANIE NIEUDANE",Toast.SHORT_LENGTH);
