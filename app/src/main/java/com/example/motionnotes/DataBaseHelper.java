@@ -99,7 +99,7 @@ public class DataBaseHelper extends SQLiteOpenHelper {
 
     public Note getNote(int id){
         SQLiteDatabase db=this.getReadableDatabase();
-        String queryString="SELECT FROM notes WHERE id = "+id;
+        String queryString="SELECT * FROM notes WHERE id = "+id;
 
         Cursor result=db.rawQuery(queryString,null);
 
@@ -126,7 +126,7 @@ public class DataBaseHelper extends SQLiteOpenHelper {
         cv.put("content", note.getContent());
         cv.put("position",note.getPosition());
 
-        int update=db.update("notes",cv,"id ?",new String[]{Integer.toString(note.getId())});
+        int update=db.update("notes",cv,"id = ?",new String[]{Integer.toString(note.getId())});
         if(update>0){
             return true;
         } else {
@@ -200,7 +200,7 @@ public class DataBaseHelper extends SQLiteOpenHelper {
 
     public Event getEvent(int id){
         SQLiteDatabase db=this.getReadableDatabase();
-        String queryString="SELECT FROM events WHERE id = "+id;
+        String queryString="SELECT * FROM events WHERE id = "+id;
 
         Cursor result=db.rawQuery(queryString,null);
 
@@ -230,7 +230,7 @@ public class DataBaseHelper extends SQLiteOpenHelper {
         cv.put("content", event.getContent());
         cv.put("position", event.getPosition());
 
-        int update=db.update("events",cv,"id ?",new String[]{Integer.toString(event.getId())});
+        int update=db.update("events",cv,"id = ?",new String[]{Integer.toString(event.getId())});
         if(update>0){
             return true;
         } else {
@@ -299,7 +299,7 @@ public class DataBaseHelper extends SQLiteOpenHelper {
     public CheckList getCheckList(int id){
 
         SQLiteDatabase db=this.getReadableDatabase();
-        String queryString="SELECT FROM lists WHERE id = "+id;
+        String queryString="SELECT * FROM lists WHERE id = "+id;
 
         Cursor result = db.rawQuery(queryString,null);
 
@@ -322,7 +322,7 @@ public class DataBaseHelper extends SQLiteOpenHelper {
     public CheckList getCheckList(String name){
 
         SQLiteDatabase db=this.getReadableDatabase();
-        String queryString="SELECT FROM lists WHERE name LIKE "+name;
+        String queryString="SELECT * FROM lists WHERE name LIKE "+name;
 
         Cursor result = db.rawQuery(queryString,null);
 
@@ -349,7 +349,7 @@ public class DataBaseHelper extends SQLiteOpenHelper {
         cv.put("name", checkList.getName());
         cv.put("position", checkList.getPosition());
 
-        int update=db.update("lists",cv,"id ?",new String[]{Integer.toString(checkList.getId())});
+        int update=db.update("lists",cv,"id = ?",new String[]{Integer.toString(checkList.getId())});
         if(update>0){
             return true;
         } else {
@@ -428,7 +428,7 @@ public class DataBaseHelper extends SQLiteOpenHelper {
         cv.put("position", item.getPosition());
         cv.put("list_id", item.getList_id());
 
-        int update=db.update("items",cv,"id ?",new String[]{Integer.toString(item.getId())});
+        int update=db.update("items",cv,"id = ?",new String[]{Integer.toString(item.getId())});
         if(update>0){
             return true;
         } else {
