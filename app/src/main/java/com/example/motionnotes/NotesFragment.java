@@ -94,7 +94,8 @@ public class NotesFragment extends Fragment {
             public void onClick(View view) {
                 DataBaseHelper dataBaseHelper = new DataBaseHelper(fragmentView.getContext());
                 List<Note> allNotes=dataBaseHelper.getAllNotes();
-                Toast.makeText(fragmentView.getContext(),allNotes.toString(),Toast.LENGTH_SHORT).show();
+                Note testNote=dataBaseHelper.getNote(2);
+                Toast.makeText(fragmentView.getContext(),testNote.toString(),Toast.LENGTH_SHORT).show();
             }
         });
 

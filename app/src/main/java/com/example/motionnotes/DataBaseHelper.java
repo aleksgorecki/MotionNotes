@@ -99,7 +99,7 @@ public class DataBaseHelper extends SQLiteOpenHelper {
 
     public Note getNote(int id){
         SQLiteDatabase db=this.getReadableDatabase();
-        String queryString="SELECT FROM notes WHERE id = "+id;
+        String queryString="SELECT * FROM notes WHERE id = "+id;
 
         Cursor result=db.rawQuery(queryString,null);
 
@@ -200,7 +200,7 @@ public class DataBaseHelper extends SQLiteOpenHelper {
 
     public Event getEvent(int id){
         SQLiteDatabase db=this.getReadableDatabase();
-        String queryString="SELECT FROM events WHERE id = "+id;
+        String queryString="SELECT * FROM events WHERE id = "+id;
 
         Cursor result=db.rawQuery(queryString,null);
 
@@ -299,7 +299,7 @@ public class DataBaseHelper extends SQLiteOpenHelper {
     public CheckList getCheckList(int id){
 
         SQLiteDatabase db=this.getReadableDatabase();
-        String queryString="SELECT FROM lists WHERE id = "+id;
+        String queryString="SELECT * FROM lists WHERE id = "+id;
 
         Cursor result = db.rawQuery(queryString,null);
 
@@ -322,7 +322,7 @@ public class DataBaseHelper extends SQLiteOpenHelper {
     public CheckList getCheckList(String name){
 
         SQLiteDatabase db=this.getReadableDatabase();
-        String queryString="SELECT FROM lists WHERE name LIKE "+name;
+        String queryString="SELECT * FROM lists WHERE name LIKE "+name;
 
         Cursor result = db.rawQuery(queryString,null);
 
