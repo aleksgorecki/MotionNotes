@@ -98,11 +98,11 @@ public class NoteEditFragment extends Fragment {
                 }
                 else if(dataBaseHelper.updateNote(note)){
                   Toast.makeText(fragmentView.getContext(),"ZMIANY ZAPISANE",Toast.LENGTH_SHORT).show();
-                //  GO TO NOTE FRAGMENT
+                //  GO TO NOTES FRAGMENT
                   Bundle bundle=new Bundle();
                   bundle.putInt("noteID",getArguments().getInt("noteID"));
                 Toast.makeText(fragmentView.getContext(),"noteID= "+getArguments().getInt("noteID"),Toast.LENGTH_SHORT).show();
-                  Navigation.findNavController(NoteEditFragment.this.getActivity(),R.id.nav_host_fragment_activity_main).navigate(R.id.navigation_note);
+                  Navigation.findNavController(NoteEditFragment.this.getActivity(),R.id.nav_host_fragment_activity_main).navigate(R.id.navigation_notes);
                 }
                 else {
                  Toast.makeText(fragmentView.getContext(),"EDYCJA NIEUDANA",Toast.LENGTH_SHORT).show();

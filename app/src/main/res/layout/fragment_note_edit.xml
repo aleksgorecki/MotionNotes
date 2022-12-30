@@ -33,7 +33,7 @@
         android:background="#00FFFFFF"
         android:ems="10"
         android:gravity="top"
-        android:inputType="textPersonName"
+        android:inputType="textMultiLine|textPersonName"
         android:text="Name"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"

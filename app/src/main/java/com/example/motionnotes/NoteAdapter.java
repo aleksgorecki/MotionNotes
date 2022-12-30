@@ -36,9 +36,36 @@ public class NoteAdapter extends RecyclerView.Adapter<NoteAdapter.MyViewHolder> 
 
     @Override
     public void onBindViewHolder(@NonNull MyViewHolder holder, int position) {
-        holder.tv_firstLine.setText(noteList.get(position).getContent());
-        holder.tv_secondLite.setText(noteList.get(position).getContent());
-        int p=position;
+        String content=noteList.get(position).getContent();
+        String line1, line2;
+        int p=position, index1, index2, index3;
+        index1=content.indexOf(10);
+        if(content.length()>index1+1)
+            index2=content.indexOf(10,index1+1);
+        else
+            index2=-1;
+
+        if(index1!=-1){
+            line1=content.substring(0,index1);
+            if(index2!=-1){
+                line2=content.substring(index1+1,index2);
+            }
+            else{
+                line2=content.substring(index1,content.length()-1);
+            }
+        } else{
+            line1=content;
+            line2="";
+        }
+
+        if(line1.length()>30)
+            line1=line1.substring(0,30)+"...";
+        if(line2.length()>30)
+            line2=line2.substring(0,30)+"...";
+
+        holder.tv_firstLine.setText(line1);
+        holder.tv_secondLite.setText(line2);
+
 
         holder.parentLayout.setOnClickListener(new View.OnClickListener() {
             @Override
