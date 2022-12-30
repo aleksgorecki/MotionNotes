@@ -126,7 +126,7 @@ public class DataBaseHelper extends SQLiteOpenHelper {
         cv.put("content", note.getContent());
         cv.put("position",note.getPosition());
 
-        int update=db.update("notes",cv,"id ?",new String[]{Integer.toString(note.getId())});
+        int update=db.update("notes",cv,"id = ?",new String[]{Integer.toString(note.getId())});
         if(update>0){
             return true;
         } else {
@@ -230,7 +230,7 @@ public class DataBaseHelper extends SQLiteOpenHelper {
         cv.put("content", event.getContent());
         cv.put("position", event.getPosition());
 
-        int update=db.update("events",cv,"id ?",new String[]{Integer.toString(event.getId())});
+        int update=db.update("events",cv,"id = ?",new String[]{Integer.toString(event.getId())});
         if(update>0){
             return true;
         } else {
@@ -349,7 +349,7 @@ public class DataBaseHelper extends SQLiteOpenHelper {
         cv.put("name", checkList.getName());
         cv.put("position", checkList.getPosition());
 
-        int update=db.update("lists",cv,"id ?",new String[]{Integer.toString(checkList.getId())});
+        int update=db.update("lists",cv,"id = ?",new String[]{Integer.toString(checkList.getId())});
         if(update>0){
             return true;
         } else {
@@ -428,7 +428,7 @@ public class DataBaseHelper extends SQLiteOpenHelper {
         cv.put("position", item.getPosition());
         cv.put("list_id", item.getList_id());
 
-        int update=db.update("items",cv,"id ?",new String[]{Integer.toString(item.getId())});
+        int update=db.update("items",cv,"id = ?",new String[]{Integer.toString(item.getId())});
         if(update>0){
             return true;
         } else {
