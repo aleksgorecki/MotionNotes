@@ -5,12 +5,14 @@ import android.content.DialogInterface;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
+import androidx.navigation.Navigation;
 
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -21,6 +23,8 @@ public class NoteFragment extends Fragment {
 
     ImageView iv_deleteButton;
     TextView tv_content;
+    DataBaseHelper dataBaseHelper;
+    int id=0;
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -66,12 +70,11 @@ public class NoteFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View fragmentView=inflater.inflate(R.layout.fragment_note, container, false);
 
-        //TODO odkometować po meargu z bazą
-        //dataBaseHelper = new DataBaseHelper(fragmentView.getContext());
+        dataBaseHelper = new DataBaseHelper(fragmentView.getContext());
 
         tv_content=fragmentView.findViewById(R.id.tv_content_note);
 
-        //Note note=dataBaseHelper.getNote(id);
+        //Note note=dataBaseHelper.getNote(getArguments().getInt("noteID"));
         //String text=note.getContent();
         //tv_content.setText(text);
 
@@ -89,12 +92,12 @@ public class NoteFragment extends Fragment {
                     public void onClick(DialogInterface dialogInterface, int i) {
                         //DELETION
                         //if(dataBaseHelper.deleteNote(note)){
-                        //  Toast.makeToast(fragmentView.getContext(),"USUNIĘTO",Toast.SHORT_LENGTH);
+                        //  Toast.makeText(fragmentView.getContext(),"USUNIĘTO",Toast.LENGTH_SHORT);
                         //  GO TO NOTES FRAGMENT
-                        //  Navigation.findNavController(NoteFragment.this.getActivity(),R.id.nav_host_fragment_activity_main).navigate(R.id.navigation_notes);
+                          Navigation.findNavController(NoteFragment.this.getActivity(),R.id.nav_host_fragment_activity_main).navigate(R.id.navigation_notes);
                         //}
                         //else {
-                        // Toast.makeToast(fragmentView.getContext(),"USUWANIE NIEUDANE",Toast.SHORT_LENGTH);
+                        //  Toast.makeText(fragmentView.getContext(),"USUWANIE NIEUDANE", Toast.LENGTH_SHORT).show();
                         //}
                     }
                 });

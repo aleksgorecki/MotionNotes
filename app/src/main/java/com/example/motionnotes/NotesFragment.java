@@ -80,14 +80,14 @@ public class NotesFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View fragmentView=inflater.inflate(R.layout.fragment_notes, container, false);
-        //DataBaseHelper dataBaseHelper = new DataBaseHelper(fragmentView.getContext());
-        //noteList=dataBaseHelper.getAllNotes();
-        fillNoteList();
+        DataBaseHelper dataBaseHelper = new DataBaseHelper(fragmentView.getContext());
+        noteList=dataBaseHelper.getAllNotes();
+        //fillNoteList();
 
         recyclerView=fragmentView.findViewById(R.id.rv_list_notes);
         layoutManager = new LinearLayoutManager(fragmentView.getContext());
         recyclerView.setLayoutManager(layoutManager);
-        mAdapter=new NoteAdapter(noteList);
+        mAdapter=new NoteAdapter(noteList, NotesFragment.this.getActivity());
         recyclerView.setAdapter(mAdapter);
 
         iv_addButton=fragmentView.findViewById(R.id.iv_add_notes);
@@ -95,7 +95,10 @@ public class NotesFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 //GO TO NOTE_EDIT FRAGMENT
-                Navigation.findNavController(NotesFragment.this.getActivity(),R.id.nav_host_fragment_activity_main).navigate(R.id.navigation_note_edit);
+                int noteId=-1;
+                Bundle bundle=new Bundle();
+                bundle.putInt("noteID",noteId);
+                Navigation.findNavController(NotesFragment.this.getActivity(),R.id.nav_host_fragment_activity_main).navigate(R.id.navigation_note_edit, bundle);
             }
         });
 

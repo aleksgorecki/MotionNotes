@@ -21,7 +21,12 @@
         android:id="@+id/navigation_note_edit"
         android:name="com.example.motionnotes.NoteEditFragment"
         android:label="NoteEdit"
-        tools:layout="@layout/fragment_note_edit" />
+        tools:layout="@layout/fragment_note_edit" >
+        <argument
+            android:name="noteId"
+            app:argType="integer"
+            android:defaultValue="-1" />
+    </fragment>
 
     <fragment
         android:id="@+id/navigation_note"

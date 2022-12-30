@@ -5,12 +5,14 @@ import android.content.DialogInterface;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
+import androidx.navigation.Navigation;
 
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.Toast;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -22,7 +24,8 @@ public class NoteEditFragment extends Fragment {
     ImageView iv_doneButton;
     ImageView iv_deleteButton;
     EditText et_editField;
-    ////DataBaseHelper dataBaseHelper;
+    DataBaseHelper dataBaseHelper;
+    Note note;
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -67,29 +70,38 @@ public class NoteEditFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View fragmentView=inflater.inflate(R.layout.fragment_note_edit, container, false);
+        //Toast.makeText(fragmentView.getContext(),"noteID= "+getArguments().getInt("noteID"), Toast.LENGTH_SHORT).show();
 
-        //TODO odkometować po meargu z bazą
-        //dataBaseHelper = new DataBaseHelper(fragmentView.getContext());
+        dataBaseHelper = new DataBaseHelper(fragmentView.getContext());
 
         et_editField=fragmentView.findViewById(R.id.et_edit_note_edit);
-        //Note note=dataBaseHelper.getNote(id);
-        //String text=note.getContent();
-        //et_editField.setText(text);
+        if(getArguments().getInt("noteID")!=-1){
+            note=dataBaseHelper.getNote(getArguments().getInt("noteID"));
+        }
+        else{
+            note=new Note();
+        }
+
+        String text=note.getContent();
+        et_editField.setText(text);
 
         iv_doneButton=fragmentView.findViewById(R.id.iv_done_note_edit);
         iv_doneButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 //SAVE CHANGES
-                //note.setContent(et_editField.getText());
-                //if(dataBaseHelper.updateNote(note)){
-                //  makeToast(fragmentView.getContext(),"ZMIANY ZAPISANE",Toast.SHORT_LENGTH);
+                note.setContent(et_editField.getText().toString());
+                if(dataBaseHelper.updateNote(note)){
+                  Toast.makeText(fragmentView.getContext(),"ZMIANY ZAPISANE",Toast.LENGTH_SHORT).show();
                 //  GO TO NOTE FRAGMENT
-                //  Navigation.findNavController(NoteEditFragment.this.getActivity(),R.id.nav_host_fragment_activity_main).navigate(R.id.navigation_note);
-                //}
-                //else {
-                // makeToast(fragmentView.getContext(),"EDYCJA NIEUDANA",Toast.SHORT_LENGTH);
-                //}
+                  Bundle bundle=new Bundle();
+                  bundle.putInt("noteID",getArguments().getInt("noteID"));
+                Toast.makeText(fragmentView.getContext(),"noteID= "+getArguments().getInt("noteID"),Toast.LENGTH_SHORT).show();
+                  Navigation.findNavController(NoteEditFragment.this.getActivity(),R.id.nav_host_fragment_activity_main).navigate(R.id.navigation_note);
+                }
+                else {
+                 Toast.makeText(fragmentView.getContext(),"EDYCJA NIEUDANA",Toast.LENGTH_SHORT).show();
+                }
             }
         });
 
@@ -107,12 +119,12 @@ public class NoteEditFragment extends Fragment {
                     public void onClick(DialogInterface dialogInterface, int i) {
                         //DELETION
                         //if(dataBaseHelper.deleteNote(note)){
-                        //  Toast.makeToast(fragmentView.getContext(),"USUNIĘTO",Toast.SHORT_LENGTH);
+                        //  Toast.makeToast(fragmentView.getContext(),"USUNIĘTO",Toast.LENGTH_SHORT);
                         //  GO TO NOTES FRAGMENT
-                        //  Navigation.findNavController(NoteEditFragment.this.getActivity(),R.id.nav_host_fragment_activity_main).navigate(R.id.navigation_notes);
+                          Navigation.findNavController(NoteEditFragment.this.getActivity(),R.id.nav_host_fragment_activity_main).navigate(R.id.navigation_notes);
                         //}
                         //else {
-                        // Toast.makeToast(fragmentView.getContext(),"USUWANIE NIEUDANE",Toast.SHORT_LENGTH);
+                        // Toast.makeToast(fragmentView.getContext(),"USUWANIE NIEUDANE",Toast.LENGTH_SHORT);
                         //}
                     }
                 });
