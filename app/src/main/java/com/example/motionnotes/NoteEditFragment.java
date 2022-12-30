@@ -91,7 +91,12 @@ public class NoteEditFragment extends Fragment {
             public void onClick(View view) {
                 //SAVE CHANGES
                 note.setContent(et_editField.getText().toString());
-                if(dataBaseHelper.updateNote(note)){
+                if(note.getId()==-1 && dataBaseHelper.addNote(note)){
+                    Toast.makeText(fragmentView.getContext(),"NOTATKA UTWORZONA",Toast.LENGTH_SHORT).show();
+                    //  GO TO NOTES FRAGMENT
+                    Navigation.findNavController(NoteEditFragment.this.getActivity(),R.id.nav_host_fragment_activity_main).navigate(R.id.navigation_notes);
+                }
+                else if(dataBaseHelper.updateNote(note)){
                   Toast.makeText(fragmentView.getContext(),"ZMIANY ZAPISANE",Toast.LENGTH_SHORT).show();
                 //  GO TO NOTE FRAGMENT
                   Bundle bundle=new Bundle();
@@ -118,14 +123,20 @@ public class NoteEditFragment extends Fragment {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
                         //DELETION
-                        //if(dataBaseHelper.deleteNote(note)){
-                        //  Toast.makeToast(fragmentView.getContext(),"USUNIĘTO",Toast.LENGTH_SHORT);
-                        //  GO TO NOTES FRAGMENT
-                          Navigation.findNavController(NoteEditFragment.this.getActivity(),R.id.nav_host_fragment_activity_main).navigate(R.id.navigation_notes);
-                        //}
-                        //else {
-                        // Toast.makeToast(fragmentView.getContext(),"USUWANIE NIEUDANE",Toast.LENGTH_SHORT);
-                        //}
+                        if (note.getId() != -1) {
+                            if (dataBaseHelper.deleteNote(note)) {
+                                Toast.makeText(fragmentView.getContext(), "USUNIĘTO", Toast.LENGTH_SHORT).show();
+                                //  GO TO NOTES FRAGMENT
+                                Navigation.findNavController(NoteEditFragment.this.getActivity(), R.id.nav_host_fragment_activity_main).navigate(R.id.navigation_notes);
+                            } else {
+                                Toast.makeText(fragmentView.getContext(), "USUWANIE NIEUDANE", Toast.LENGTH_SHORT).show();
+                            }
+                        }
+                        else{
+                            Toast.makeText(fragmentView.getContext(), "USUNIĘTO", Toast.LENGTH_SHORT).show();
+                            //  GO TO NOTES FRAGMENT
+                            Navigation.findNavController(NoteEditFragment.this.getActivity(), R.id.nav_host_fragment_activity_main).navigate(R.id.navigation_notes);
+                        }
                     }
                 });
                 builder.setNegativeButton("NIE", new DialogInterface.OnClickListener() {

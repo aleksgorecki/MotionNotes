@@ -13,6 +13,9 @@ public class Note {
     }
 
     public Note() {
+        id=-1;
+        content="";
+        position=0;
     }
 
     public int getId() {

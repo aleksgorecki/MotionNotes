@@ -141,10 +141,10 @@ public class DataBaseHelper extends SQLiteOpenHelper {
         Cursor result=db.rawQuery(queryString,null);
 
         if(result.moveToFirst()){
-            return true;
+            return false;
         }
         else {
-            return false;
+            return true;
         }
     }
 
@@ -245,10 +245,10 @@ public class DataBaseHelper extends SQLiteOpenHelper {
         Cursor result=db.rawQuery(queryString,null);
 
         if(result.moveToFirst()){
-            return true;
+            return false;
         }
         else {
-            return false;
+            return true;
         }
     }
 
@@ -364,10 +364,10 @@ public class DataBaseHelper extends SQLiteOpenHelper {
         Cursor result=db.rawQuery(queryString,null);
 
         if(result.moveToFirst()){
-            return true;
+            return false;
         }
         else {
-            return false;
+            return true;
         }
     }
 
@@ -443,10 +443,10 @@ public class DataBaseHelper extends SQLiteOpenHelper {
         Cursor result=db.rawQuery(queryString,null);
 
         if(result.moveToFirst()){
-            return true;
+            return false;
         }
         else {
-            return false;
+            return true;
         }
     }
 }
