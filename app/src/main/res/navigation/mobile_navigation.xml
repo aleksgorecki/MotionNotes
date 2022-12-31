@@ -39,4 +39,9 @@
         android:name="com.example.motionnotes.EventsFragment"
         android:label="Events"
         tools:layout="@layout/fragment_events" />
+    <fragment
+        android:id="@+id/navigation_event_edit"
+        android:name="com.example.motionnotes.EventEditFragment"
+        android:label="EventEdit"
+        tools:layout="@layout/fragment_event_edit" />
 </navigation>

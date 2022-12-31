@@ -38,7 +38,7 @@ public class NoteAdapter extends RecyclerView.Adapter<NoteAdapter.MyViewHolder> 
     public void onBindViewHolder(@NonNull MyViewHolder holder, int position) {
         String content=noteList.get(position).getContent();
         String line1, line2;
-        int p=position, index1, index2, index3;
+        int p=position, index1, index2;
         index1=content.indexOf(10);
         if(content.length()>index1+1)
             index2=content.indexOf(10,index1+1);
@@ -60,8 +60,8 @@ public class NoteAdapter extends RecyclerView.Adapter<NoteAdapter.MyViewHolder> 
 
         if(line1.length()>30)
             line1=line1.substring(0,30)+"...";
-        if(line2.length()>30)
-            line2=line2.substring(0,30)+"...";
+        if(line2.length()>50)
+            line2=line2.substring(0,50)+"...";
 
         holder.tv_firstLine.setText(line1);
         holder.tv_secondLite.setText(line2);

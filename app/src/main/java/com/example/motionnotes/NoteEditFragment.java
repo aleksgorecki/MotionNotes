@@ -70,17 +70,16 @@ public class NoteEditFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View fragmentView=inflater.inflate(R.layout.fragment_note_edit, container, false);
-        //Toast.makeText(fragmentView.getContext(),"noteID= "+getArguments().getInt("noteID"), Toast.LENGTH_SHORT).show();
-
         dataBaseHelper = new DataBaseHelper(fragmentView.getContext());
 
-        et_editField=fragmentView.findViewById(R.id.et_edit_note_edit);
         if(getArguments().getInt("noteID")!=-1){
             note=dataBaseHelper.getNote(getArguments().getInt("noteID"));
         }
         else{
             note=new Note();
         }
+
+        et_editField=fragmentView.findViewById(R.id.et_edit_note_edit);
 
         String text=note.getContent();
         et_editField.setText(text);
@@ -91,6 +90,7 @@ public class NoteEditFragment extends Fragment {
             public void onClick(View view) {
                 //SAVE CHANGES
                 note.setContent(et_editField.getText().toString());
+
                 if(note.getId()==-1 && dataBaseHelper.addNote(note)){
                     Toast.makeText(fragmentView.getContext(),"NOTATKA UTWORZONA",Toast.LENGTH_SHORT).show();
                     //  GO TO NOTES FRAGMENT
@@ -99,13 +99,13 @@ public class NoteEditFragment extends Fragment {
                 else if(dataBaseHelper.updateNote(note)){
                   Toast.makeText(fragmentView.getContext(),"ZMIANY ZAPISANE",Toast.LENGTH_SHORT).show();
                 //  GO TO NOTES FRAGMENT
-                  Bundle bundle=new Bundle();
-                  bundle.putInt("noteID",getArguments().getInt("noteID"));
-                Toast.makeText(fragmentView.getContext(),"noteID= "+getArguments().getInt("noteID"),Toast.LENGTH_SHORT).show();
+                  //Bundle bundle=new Bundle();
+                  //bundle.putInt("noteID",getArguments().getInt("noteID"));
+                //Toast.makeText(fragmentView.getContext(),"noteID= "+getArguments().getInt("noteID"),Toast.LENGTH_SHORT).show();
                   Navigation.findNavController(NoteEditFragment.this.getActivity(),R.id.nav_host_fragment_activity_main).navigate(R.id.navigation_notes);
                 }
                 else {
-                 Toast.makeText(fragmentView.getContext(),"EDYCJA NIEUDANA",Toast.LENGTH_SHORT).show();
+                 Toast.makeText(fragmentView.getContext(),"ZAPIS NIEUDANY",Toast.LENGTH_SHORT).show();
                 }
             }
         });

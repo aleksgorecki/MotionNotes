@@ -28,7 +28,7 @@
         app:layout_constraintTop_toBottomOf="@+id/tv_firstLine_note_list_item" />
 
     <View
-        android:id="@+id/divider"
+        android:id="@+id/divider_note"
         android:layout_width="409dp"
         android:layout_height="1dp"
         android:background="?android:attr/listDivider"
