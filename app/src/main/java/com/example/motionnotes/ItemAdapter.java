@@ -31,11 +31,13 @@ public class ItemAdapter extends RecyclerView.Adapter<ItemAdapter.MyViewHolder> 
 
     List<Item> itemList;
     Activity activity;
+    CheckListEditFragment fragment;
     int currentlySelectedPosition = -1;
 
-    public ItemAdapter(List<Item> itemList, Activity activity) {
+    public ItemAdapter(List<Item> itemList, Activity activity, CheckListEditFragment fragment) {
         this.itemList = itemList;
         this.activity = activity;
+        this.fragment = fragment;
     }
 
     @NonNull
@@ -62,9 +64,11 @@ public class ItemAdapter extends RecyclerView.Adapter<ItemAdapter.MyViewHolder> 
         holder.et_content.setOnFocusChangeListener((view, b) -> {
             if (b) {
                 currentlySelectedPosition = holder.getAdapterPosition();
+                fragment.onItemSelected();
             }
             else {
                 currentlySelectedPosition = -1;
+                fragment.onItemSelectionRemoved();
             }
 
             Log.e("TEST", Integer.toString(currentlySelectedPosition));

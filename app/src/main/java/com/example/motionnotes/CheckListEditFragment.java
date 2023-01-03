@@ -110,7 +110,7 @@ public class CheckListEditFragment extends Fragment {
 
         layoutManager = new LinearLayoutManager(fragmentView.getContext());
         recyclerView.setLayoutManager(layoutManager);
-        mAdapter = new ItemAdapter(checkList.getItems(), CheckListEditFragment.this.getActivity());
+        mAdapter = new ItemAdapter(checkList.getItems(), CheckListEditFragment.this.getActivity(), this);
         recyclerView.setAdapter(mAdapter);
 
         fabDone.setOnClickListener(view -> {
@@ -193,5 +193,24 @@ public class CheckListEditFragment extends Fragment {
         });
 
         return fragmentView;
+    }
+
+    public void onItemSelected() {
+        fabDeleteItem.setVisibility(View.VISIBLE);
+    }
+
+    public void onItemSelectionRemoved() {
+        fabDeleteItem.setVisibility(View.GONE);
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        if (mAdapter.currentlySelectedPosition != -1) {
+            onItemSelected();
+        }
+        else {
+            onItemSelectionRemoved();
+        }
     }
 }
