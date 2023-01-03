@@ -1,5 +1,6 @@
 package com.example.motionnotes;
 
+import android.app.AlertDialog;
 import android.os.Bundle;
 
 import androidx.constraintlayout.widget.ConstraintLayout;
@@ -117,6 +118,17 @@ public class CheckListEditFragment extends Fragment {
             //SAVE CHANGES
             checkList.setName(et_checkListName.getText().toString());
 
+            if (checkList.getName().isEmpty()) {
+                AlertDialog.Builder builder=new AlertDialog.Builder(fragmentView.getContext());
+                builder.setCancelable(true);
+                builder.setTitle("Błąd zapisu");
+                builder.setMessage("Nazwa listy nie może być pusta.");
+                builder.setPositiveButton("Ok", null);
+                AlertDialog dialog = builder.create();
+                dialog.show();
+                return;
+            }
+
             if( checkList.getId() == -1 ){
                 checkList.setId((int) dataBaseHelper.addCheckList(checkList));
                 for (Item item: checkList.getItems()) {
@@ -176,21 +188,30 @@ public class CheckListEditFragment extends Fragment {
         });
 
         fabDelete.setOnClickListener(view -> {
-            if (checkList.getId() != -1) {
-                if (dataBaseHelper.deleteCheckList(checkList)) {
-                    for (Item item: checkList.getItems()) {
-                        dataBaseHelper.deleteItem(item);
+
+            AlertDialog.Builder builder = new AlertDialog.Builder(fragmentView.getContext());
+            builder.setCancelable(true);
+            builder.setTitle("Usuwanie listy");
+            builder.setMessage("Czy na pewno chcesz usunąć tę listę?");
+            builder.setPositiveButton("Tak", (dialogInterface, i) -> {
+                if (checkList.getId() != -1) {
+                    if (dataBaseHelper.deleteCheckList(checkList)) {
+                        for (Item item : checkList.getItems()) {
+                            dataBaseHelper.deleteItem(item);
+                        }
+                        Toast.makeText(fragmentView.getContext(), "USUNIĘTO", Toast.LENGTH_SHORT).show();
+                        Navigation.findNavController(CheckListEditFragment.this.getActivity(), R.id.nav_host_fragment_activity_main).navigate(R.id.navigation_checklists);
+                    } else {
+                        Toast.makeText(fragmentView.getContext(), "USUWANIE NIEUDANE", Toast.LENGTH_SHORT).show();
                     }
+                } else {
                     Toast.makeText(fragmentView.getContext(), "USUNIĘTO", Toast.LENGTH_SHORT).show();
                     Navigation.findNavController(CheckListEditFragment.this.getActivity(), R.id.nav_host_fragment_activity_main).navigate(R.id.navigation_checklists);
-                } else {
-                    Toast.makeText(fragmentView.getContext(), "USUWANIE NIEUDANE", Toast.LENGTH_SHORT).show();
                 }
-            }
-            else{
-                Toast.makeText(fragmentView.getContext(), "USUNIĘTO", Toast.LENGTH_SHORT).show();
-                Navigation.findNavController(CheckListEditFragment.this.getActivity(), R.id.nav_host_fragment_activity_main).navigate(R.id.navigation_checklists);
-            }
+            });
+            builder.setNegativeButton("Nie", null);
+            AlertDialog dialog = builder.create();
+            dialog.show();
         });
 
         return fragmentView;
