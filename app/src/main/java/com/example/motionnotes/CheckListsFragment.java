@@ -2,6 +2,7 @@ package com.example.motionnotes;
 
 import android.os.Bundle;
 
+import androidx.cardview.widget.CardView;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -10,6 +11,8 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
@@ -24,7 +27,9 @@ import java.util.List;
 public class CheckListsFragment extends Fragment {
 
     private List<CheckList> checkListList = new ArrayList<>();
-
+    private ImageView ivPlaceholder;
+    private TextView tvPlaceholder;
+    private CardView cardView;
     private RecyclerView recyclerView;
     private RecyclerView.Adapter mAdapter;
     private RecyclerView.LayoutManager layoutManager;
@@ -83,6 +88,11 @@ public class CheckListsFragment extends Fragment {
         checkListList = dataBaseHelper.getAllCheckLists();
 
         recyclerView = fragmentView.findViewById(R.id.rv_check_lists);
+
+        cardView = fragmentView.findViewById(R.id.cardView_checklist);
+        ivPlaceholder = fragmentView.findViewById(R.id.iv_checklist_placeholder);
+        tvPlaceholder = fragmentView.findViewById(R.id.tv_checklist_placeholder);
+
         layoutManager = new LinearLayoutManager(fragmentView.getContext());
         recyclerView.setLayoutManager(layoutManager);
         mAdapter = new CheckListAdapter(checkListList, CheckListsFragment.this.getActivity());
@@ -99,7 +109,24 @@ public class CheckListsFragment extends Fragment {
         return fragmentView;
     }
 
-//    public void fillCheckListList() {
+    @Override
+    public void onResume() {
+        super.onResume();
+
+        if (checkListList.isEmpty()) {
+            cardView.setVisibility(View.GONE);
+            tvPlaceholder.setVisibility(View.VISIBLE);
+            ivPlaceholder.setVisibility(View.VISIBLE);
+        }
+        else {
+            cardView.setVisibility(View.VISIBLE);
+            tvPlaceholder.setVisibility(View.GONE);
+            ivPlaceholder.setVisibility(View.GONE);
+        }
+
+    }
+
+    //    public void fillCheckListList() {
 //        checkListList.add(new CheckList(1, "lista1", 0, new ArrayList<Item>() {{
 //            add(new Item(1, "item1", false, 0, 1));
 //            add(new Item(2, "item2", false, 1, 1));

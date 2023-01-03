@@ -7,22 +7,66 @@
     android:layout_height="match_parent"
     tools:context=".CheckListsFragment">
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/rv_check_lists"
+    <TextView
+        android:id="@+id/textView"
         android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_margin="10dp"
+        android:text="Moje listy"
+        android:textSize="24sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <androidx.cardview.widget.CardView
+        android:id="@+id/cardView_checklist"
+        android:layout_width="match_parent"
         android:layout_height="0dp"
+        android:layout_margin="10dp"
+        app:cardCornerRadius="14dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView"
+        tools:layout_editor_absoluteX="10dp">
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rv_check_lists"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+    </androidx.cardview.widget.CardView>
+
+    <ImageView
+        android:id="@+id/iv_checklist_placeholder"
+        android:layout_width="150dp"
+        android:layout_height="150dp"
+        app:layout_constraintVertical_bias="0.35"
+        android:src="@drawable/checklist_illustration"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/tv_checklist_placeholder"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="20dp"
+        android:text="Naciśnij przycisk + aby utworzyć nową listę"
+        app:layout_constraintEnd_toEndOf="@+id/iv_checklist_placeholder"
+        app:layout_constraintStart_toStartOf="@+id/iv_checklist_placeholder"
+        app:layout_constraintTop_toBottomOf="@+id/iv_checklist_placeholder" />
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/fab_add_check_list"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_margin="20dp"
-        app:fabSize="normal"
         android:src="@drawable/ic_add"
-        app:layout_constraintBottom_toBottomOf="@+id/rv_check_lists"
-        app:layout_constraintEnd_toEndOf="@+id/rv_check_lists" />
+        app:fabSize="normal"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
 </androidx.constraintlayout.widget.ConstraintLayout>

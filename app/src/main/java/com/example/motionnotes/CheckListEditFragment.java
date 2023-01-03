@@ -3,6 +3,7 @@ package com.example.motionnotes;
 import android.app.AlertDialog;
 import android.os.Bundle;
 
+import androidx.cardview.widget.CardView;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.Navigation;
@@ -15,6 +16,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
@@ -37,6 +40,9 @@ public class CheckListEditFragment extends Fragment {
     FloatingActionButton fabDelete;
     FloatingActionButton fabAddItem;
     FloatingActionButton fabDeleteItem;
+    ImageView ivPlaceholder;
+    TextView tvPlaceholder;
+    CardView cardViewItems;
     private ItemAdapter mAdapter;
     private RecyclerView.LayoutManager layoutManager;
     private ArrayList<Item> itemsToDelete = new ArrayList<>();
@@ -95,6 +101,9 @@ public class CheckListEditFragment extends Fragment {
         fabAddItem = fragmentView.findViewById(R.id.fab_item_add);
         fabDeleteItem = fragmentView.findViewById(R.id.fab_item_delete);
         parentLayout = fragmentView.findViewById(R.id.constraintLayout_check_list_edit);
+        ivPlaceholder = fragmentView.findViewById(R.id.iv_item_placeholder);
+        tvPlaceholder= fragmentView.findViewById(R.id.tv_item_placeholder);
+        cardViewItems= fragmentView.findViewById(R.id.cardView_items);
 
         dataBaseHelper = new DataBaseHelper(fragmentView.getContext());
 
@@ -170,8 +179,7 @@ public class CheckListEditFragment extends Fragment {
             checkList.addItem(newItem);
             mAdapter.notifyDataSetChanged();
             recyclerView.smoothScrollToPosition(checkList.getItems().size() - 1);
-//            ItemAdapter.MyViewHolder viewHolder = (ItemAdapter.MyViewHolder) recyclerView.findViewHolderForAdapterPosition(checkList.getItems().size() - 1);
-//            viewHolder.et_content.requestFocus();
+            switchVisibilities();
         });
 
         fabDeleteItem.setOnClickListener(view -> {
@@ -184,6 +192,7 @@ public class CheckListEditFragment extends Fragment {
                 mAdapter.notifyDataSetChanged();
                 mAdapter.resetSelection();
                 parentLayout.requestFocus();
+                switchVisibilities();
             }
         });
 
@@ -234,9 +243,20 @@ public class CheckListEditFragment extends Fragment {
         else {
             onItemSelectionRemoved();
         }
+
+        switchVisibilities();
     }
 
-    public void requestFocus() {
-        parentLayout.requestFocus();
+    public void switchVisibilities() {
+        if (checkList.getItems().isEmpty()) {
+            ivPlaceholder.setVisibility(View.VISIBLE);
+            tvPlaceholder.setVisibility(View.VISIBLE);
+            cardViewItems.setVisibility(View.GONE);
+        }
+        else {
+            ivPlaceholder.setVisibility(View.GONE);
+            tvPlaceholder.setVisibility(View.GONE);
+            cardViewItems.setVisibility(View.VISIBLE);
+        }
     }
 }
