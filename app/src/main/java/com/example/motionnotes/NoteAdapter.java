@@ -51,7 +51,7 @@ public class NoteAdapter extends RecyclerView.Adapter<NoteAdapter.MyViewHolder> 
                 line2=content.substring(index1+1,index2);
             }
             else{
-                line2=content.substring(index1,content.length()-1);
+                line2=content.substring(index1+1);
             }
         } else{
             line1=content;

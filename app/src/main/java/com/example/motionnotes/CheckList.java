@@ -23,6 +23,10 @@ public class CheckList {
     }
 
     public CheckList() {
+        id=-1;
+        name="";
+        position=0;
+        items = new ArrayList<>();
     }
 
     public int getId() {
@@ -55,6 +59,14 @@ public class CheckList {
 
     public void setItems(ArrayList<Item> items) {
         this.items = items;
+    }
+
+    public void addItem(Item item) {
+        items.add(item);
+    }
+
+    public void removeItemAt(int position) {
+        items.remove(position);
     }
 
     @Override

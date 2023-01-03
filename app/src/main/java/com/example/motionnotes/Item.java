@@ -16,6 +16,11 @@ public class Item {
     }
 
     public Item() {
+        id = 0;
+        content = "";
+        isDone = false;
+        position = 0;
+        list_id = -1;
     }
 
     public int getId() {

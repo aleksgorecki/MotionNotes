@@ -12,6 +12,17 @@
         tools:layout="@layout/fragment_check_lists" />
 
     <fragment
+        android:id="@+id/navigation_checklists_edit"
+        android:name="com.example.motionnotes.CheckListEditFragment"
+        android:label="CheckListEdit"
+        tools:layout="@layout/fragment_check_list_edit" >
+        <argument
+            android:name="checkListId"
+            app:argType="integer"
+            android:defaultValue="-1" />
+    </fragment>
+
+    <fragment
         android:id="@+id/navigation_notes"
         android:name="com.example.motionnotes.NotesFragment"
         android:label="Notes"
