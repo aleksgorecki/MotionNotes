@@ -1,29 +1,21 @@
 package com.example.motionnotes;
 
-import static androidx.core.content.ContextCompat.getColor;
-
 import android.app.Activity;
-import android.content.Context;
-import android.content.SharedPreferences;
-import android.os.Bundle;
+import android.content.res.TypedArray;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.util.Log;
+import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.inputmethod.EditorInfo;
 import android.widget.CheckBox;
+import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.core.content.ContextCompat;
-import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.RecyclerView;
-
-import org.w3c.dom.Text;
 
 import java.util.List;
 
@@ -57,22 +49,32 @@ public class ItemAdapter extends RecyclerView.Adapter<ItemAdapter.MyViewHolder> 
         holder.et_content.setText(content);
         holder.checkBox.setChecked(isDone);
 
+
         holder.checkBox.setOnCheckedChangeListener((compoundButton, b) -> {
             itemList.get(holder.getAdapterPosition()).setDone(b);
         });
 
-        holder.et_content.setOnFocusChangeListener((view, b) -> {
-            if (b) {
-                currentlySelectedPosition = holder.getAdapterPosition();
-                fragment.onItemSelected();
-            }
-            else {
+        if (currentlySelectedPosition == holder.getAdapterPosition()) {
+            holder.iv_toDelete.setColorFilter(ContextCompat.getColor(activity, R.color.purple_200));
+        }
+        else {
+            holder.iv_toDelete.setColorFilter(getColor(android.R.attr.textColorSecondary));
+        }
+
+
+        holder.iv_toDelete.setOnClickListener(view -> {
+            if (currentlySelectedPosition == holder.getAdapterPosition()) {
                 currentlySelectedPosition = -1;
+                notifyDataSetChanged();
                 fragment.onItemSelectionRemoved();
             }
-
-            Log.e("TEST", Integer.toString(currentlySelectedPosition));
+            else {
+                currentlySelectedPosition = holder.getAdapterPosition();
+                notifyDataSetChanged();
+                fragment.onItemSelected();
+            }
         });
+
 
         holder.et_content.addTextChangedListener(new TextWatcher() {
             @Override
@@ -97,6 +99,7 @@ public class ItemAdapter extends RecyclerView.Adapter<ItemAdapter.MyViewHolder> 
 
         TextView et_content;
         CheckBox checkBox;
+        ImageView iv_toDelete;
 
         ConstraintLayout parentLayout;
 
@@ -105,7 +108,21 @@ public class ItemAdapter extends RecyclerView.Adapter<ItemAdapter.MyViewHolder> 
             et_content = itemView.findViewById(R.id.et_item_content);
             checkBox = itemView.findViewById(R.id.checkBox_item);
             parentLayout=itemView.findViewById(R.id.constraintLayout_item);
+            iv_toDelete = itemView.findViewById(R.id.iv_to_delete);
         }
+    }
+
+    public void resetSelection() {
+        currentlySelectedPosition = -1;
+        fragment.onItemSelectionRemoved();
+    }
+
+    public int getColor(int colorResId) {
+        TypedValue typedValue = new TypedValue();
+        TypedArray typedArray = activity.obtainStyledAttributes(typedValue.data, new int[] {colorResId});
+        int color = typedArray.getColor(0, 0);
+        typedArray.recycle();
+        return color;
     }
 }
 

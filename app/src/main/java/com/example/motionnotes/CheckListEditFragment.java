@@ -166,10 +166,11 @@ public class CheckListEditFragment extends Fragment {
 
             int currentSelection = mAdapter.currentlySelectedPosition;
 
-            if (currentSelection != -1) {
+            if (currentSelection != -1 && currentSelection < checkList.getItems().size()) {
                 itemsToDelete.add(checkList.getItems().get(currentSelection));
                 checkList.removeItemAt(currentSelection);
                 mAdapter.notifyDataSetChanged();
+                mAdapter.resetSelection();
                 parentLayout.requestFocus();
             }
         });
@@ -212,5 +213,9 @@ public class CheckListEditFragment extends Fragment {
         else {
             onItemSelectionRemoved();
         }
+    }
+
+    public void requestFocus() {
+        parentLayout.requestFocus();
     }
 }
