@@ -16,6 +16,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.navigation.NavigationView;
 
 import java.util.ArrayList;
@@ -29,7 +30,7 @@ import java.util.List;
  */
 public class NotesFragment extends Fragment {
 
-    private ImageView iv_addButton;
+    private FloatingActionButton fabAdd;
 
     private List<Note> noteList = new ArrayList<Note>();
 
@@ -90,8 +91,8 @@ public class NotesFragment extends Fragment {
         mAdapter=new NoteAdapter(noteList, NotesFragment.this.getActivity());
         recyclerView.setAdapter(mAdapter);
 
-        iv_addButton=fragmentView.findViewById(R.id.iv_add_notes);
-        iv_addButton.setOnClickListener(new View.OnClickListener() {
+        fabAdd = fragmentView.findViewById(R.id.fab_add_note);
+        fabAdd.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 //GO TO NOTE_EDIT FRAGMENT

@@ -14,6 +14,8 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Toast;
 
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
+
 /**
  * A simple {@link Fragment} subclass.
  * Use the {@link NoteEditFragment#newInstance} factory method to
@@ -21,8 +23,8 @@ import android.widget.Toast;
  */
 public class NoteEditFragment extends Fragment {
 
-    ImageView iv_doneButton;
-    ImageView iv_deleteButton;
+    FloatingActionButton fabDone;
+    FloatingActionButton fabDelete;
     EditText et_editField;
     DataBaseHelper dataBaseHelper;
     Note note;
@@ -84,8 +86,8 @@ public class NoteEditFragment extends Fragment {
         String text=note.getContent();
         et_editField.setText(text);
 
-        iv_doneButton=fragmentView.findViewById(R.id.iv_done_note_edit);
-        iv_doneButton.setOnClickListener(new View.OnClickListener() {
+        fabDone = fragmentView.findViewById(R.id.fab_note_done);
+        fabDone.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 //SAVE CHANGES
@@ -110,8 +112,8 @@ public class NoteEditFragment extends Fragment {
             }
         });
 
-        iv_deleteButton=fragmentView.findViewById(R.id.iv_delete_note_edit);
-        iv_deleteButton.setOnClickListener(new View.OnClickListener() {
+        fabDelete = fragmentView.findViewById(R.id.fab_note_delete);
+        fabDelete.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 //CONFIRMATION POPUP

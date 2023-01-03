@@ -12,6 +12,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -22,7 +24,7 @@ import java.util.List;
  */
 public class EventsFragment extends Fragment {
 
-    private ImageView iv_addButton;
+    private FloatingActionButton fabAdd;
 
     private List<Event> eventList=new ArrayList<Event>();
 
@@ -83,8 +85,8 @@ public class EventsFragment extends Fragment {
         mAdapter= new EventAdapter(eventList,EventsFragment.this.getActivity());
         recyclerView.setAdapter(mAdapter);
 
-        iv_addButton=fragmentView.findViewById(R.id.iv_add_events);
-        iv_addButton.setOnClickListener(new View.OnClickListener() {
+        fabAdd = fragmentView.findViewById(R.id.fab_add_event);
+        fabAdd.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 //GO TO EVENT EDIT

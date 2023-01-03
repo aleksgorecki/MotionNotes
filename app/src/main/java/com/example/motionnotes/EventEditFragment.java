@@ -16,6 +16,8 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Toast;
 
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
+
 import java.util.Calendar;
 
 /**
@@ -25,8 +27,8 @@ import java.util.Calendar;
  */
 public class EventEditFragment extends Fragment {
 
-    ImageView iv_doneButton;
-    ImageView iv_deleteButton;
+    FloatingActionButton fabDone;
+    FloatingActionButton fabDelete;
     EditText et_name;
     EditText et_date;
     EditText et_hour;
@@ -202,8 +204,8 @@ public class EventEditFragment extends Fragment {
             event=new Event();
         }
 
-        iv_doneButton=fragmentView.findViewById(R.id.iv_done_event_edit);
-        iv_doneButton.setOnClickListener(new View.OnClickListener() {
+        fabDone=fragmentView.findViewById(R.id.fab_event_done);
+        fabDone.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 //SAVE CHANGES
@@ -226,8 +228,8 @@ public class EventEditFragment extends Fragment {
             }
         });
 
-        iv_deleteButton=fragmentView.findViewById(R.id.iv_delete_event_edit);
-        iv_deleteButton.setOnClickListener(new View.OnClickListener() {
+        fabDelete=fragmentView.findViewById(R.id.fab_event_delete);
+        fabDelete.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 //CONFIRMATION POPUP
