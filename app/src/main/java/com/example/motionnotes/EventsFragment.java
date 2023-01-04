@@ -2,6 +2,7 @@ package com.example.motionnotes;
 
 import android.os.Bundle;
 
+import androidx.cardview.widget.CardView;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -11,6 +12,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
@@ -25,6 +27,9 @@ import java.util.List;
 public class EventsFragment extends Fragment {
 
     private FloatingActionButton fabAdd;
+    private ImageView ivPlaceholder;
+    private TextView tvPlaceholder;
+    private CardView cardView;
 
     private List<Event> eventList=new ArrayList<Event>();
 
@@ -79,6 +84,10 @@ public class EventsFragment extends Fragment {
         eventList=dataBaseHelper.getAllEvents();
         //fillEventList();
 
+        ivPlaceholder = fragmentView.findViewById(R.id.iv_event_placeholder);
+        tvPlaceholder = fragmentView.findViewById(R.id.tv_event_placeholder);
+        cardView = fragmentView.findViewById(R.id.cardView_event);
+
         recyclerView=fragmentView.findViewById(R.id.rv_list_events);
         layoutManager=new LinearLayoutManager(fragmentView.getContext());
         recyclerView.setLayoutManager(layoutManager);
@@ -112,5 +121,21 @@ public class EventsFragment extends Fragment {
         eventList.add(new Event(8,"Event 8 name","00/00/0000","00:00","Event 8 content",7));
         eventList.add(new Event(9,"Event 9 name","00/00/0000","00:00","Event 9 content",8));
         eventList.add(new Event(10,"Event 10 name","00/00/0000","00:00","Event 10 content",9));
+    }
+
+    public void onResume() {
+        super.onResume();
+
+        if (eventList.isEmpty()) {
+            cardView.setVisibility(View.GONE);
+            tvPlaceholder.setVisibility(View.VISIBLE);
+            ivPlaceholder.setVisibility(View.VISIBLE);
+        }
+        else {
+            cardView.setVisibility(View.VISIBLE);
+            tvPlaceholder.setVisibility(View.GONE);
+            ivPlaceholder.setVisibility(View.GONE);
+        }
+
     }
 }

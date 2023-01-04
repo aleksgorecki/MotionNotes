@@ -2,6 +2,7 @@ package com.example.motionnotes;
 
 import android.os.Bundle;
 
+import androidx.cardview.widget.CardView;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.navigation.NavDirections;
@@ -15,6 +16,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.navigation.NavigationView;
@@ -31,6 +33,9 @@ import java.util.List;
 public class NotesFragment extends Fragment {
 
     private FloatingActionButton fabAdd;
+    private ImageView ivPlaceholder;
+    private TextView tvPlaceholder;
+    private CardView cardView;
 
     private List<Note> noteList = new ArrayList<Note>();
 
@@ -85,6 +90,10 @@ public class NotesFragment extends Fragment {
         noteList=dataBaseHelper.getAllNotes();
         //fillNoteList();
 
+        ivPlaceholder = fragmentView.findViewById(R.id.iv_notes_placeholder);
+        tvPlaceholder = fragmentView.findViewById(R.id.tv_notes_placeholder);
+        cardView = fragmentView.findViewById(R.id.cardView_notes);
+
         recyclerView=fragmentView.findViewById(R.id.rv_list_notes);
         layoutManager = new LinearLayoutManager(fragmentView.getContext());
         recyclerView.setLayoutManager(layoutManager);
@@ -105,6 +114,22 @@ public class NotesFragment extends Fragment {
 
         // Inflate the layout for this fragment
         return fragmentView;
+    }
+
+    public void onResume() {
+        super.onResume();
+
+        if (noteList.isEmpty()) {
+            cardView.setVisibility(View.GONE);
+            tvPlaceholder.setVisibility(View.VISIBLE);
+            ivPlaceholder.setVisibility(View.VISIBLE);
+        }
+        else {
+            cardView.setVisibility(View.VISIBLE);
+            tvPlaceholder.setVisibility(View.GONE);
+            ivPlaceholder.setVisibility(View.GONE);
+        }
+
     }
 
     void fillNoteList(){

@@ -8,63 +8,93 @@
     android:focusableInTouchMode="true"
     tools:context=".EventEditFragment">
 
-    <EditText
-        android:id="@+id/et_name_event_edit"
-        android:layout_width="0dp"
+    <androidx.cardview.widget.CardView
+        android:id="@+id/cardView_eventName"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="2dp"
-        android:background="#00FFFFFF"
-        android:ems="10"
-        android:hint="Nazwa wydarzenia"
-        android:inputType="textPersonName"
-        android:minHeight="48dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/iv_done_event_edit" />
+        android:layout_margin="10dp"
+        app:cardCornerRadius="14dp"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:layout_editor_absoluteX="10dp">
 
-    <EditText
-        android:id="@+id/et_date_event_edit"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_margin="2dp"
-        android:background="#00FFFFFF"
-        android:ems="10"
-        android:hint="dd/mm/rrrr"
-        android:inputType="date"
-        android:minHeight="34dp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/et_name_event_edit" />
+        <EditText
+            android:id="@+id/et_name_event_edit"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="10dp"
+            android:background="#00FFFFFF"
+            android:ems="10"
+            android:hint="Nazwa wydarzenia"
+            android:inputType="textPersonName"
+            android:minHeight="48dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/iv_done_event_edit" />
 
-    <EditText
-        android:id="@+id/et_hour_event_edit"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_margin="2dp"
-        android:layout_marginBottom="2dp"
-        android:background="#00FFFFFF"
-        android:ems="10"
-        android:hint="hh:mm"
-        android:inputType="time"
-        android:minHeight="34dp"
-        app:layout_constraintBottom_toTopOf="@+id/et_content_event_edit"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/et_date_event_edit"
-        app:layout_constraintTop_toBottomOf="@+id/et_name_event_edit" />
+    </androidx.cardview.widget.CardView>
 
-    <EditText
-        android:id="@+id/et_content_event_edit"
-        android:layout_width="0dp"
+    <androidx.cardview.widget.CardView
+        android:id="@+id/cardView_eventTime"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_margin="10dp"
+        app:cardCornerRadius="14dp"
+        app:layout_constraintTop_toBottomOf="@+id/cardView_eventName"
+        tools:layout_editor_absoluteX="10dp">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <EditText
+                android:id="@+id/et_date_event_edit"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="10dp"
+                android:background="#00FFFFFF"
+                android:ems="10"
+                android:hint="dd/mm/rrrr"
+                android:inputType="date"
+                android:minHeight="34dp" />
+
+            <EditText
+                android:id="@+id/et_hour_event_edit"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="10dp"
+                android:layout_marginBottom="2dp"
+                android:background="#00FFFFFF"
+                android:ems="10"
+                android:hint="hh:mm"
+                android:inputType="time"
+                android:minHeight="34dp" />
+        </LinearLayout>
+    </androidx.cardview.widget.CardView>
+
+    <androidx.cardview.widget.CardView
+        android:id="@+id/cardView_eventContent"
+        android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_margin="2dp"
-        android:background="#00FFFFFF"
-        android:ems="10"
-        android:gravity="top"
-        android:hint="Notatki"
-        android:inputType="textMultiLine|textPersonName"
+        android:layout_margin="10dp"
+        app:cardCornerRadius="14dp"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/et_date_event_edit" />
+        app:layout_constraintTop_toBottomOf="@+id/cardView_eventTime"
+        tools:layout_editor_absoluteX="10dp">
+
+        <EditText
+            android:id="@+id/et_content_event_edit"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_margin="10dp"
+            android:background="#00FFFFFF"
+            android:ems="10"
+            android:gravity="top"
+            android:hint="Notatki"
+            android:inputType="textMultiLine|textPersonName" />
+
+    </androidx.cardview.widget.CardView>
+
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/fab_event_delete"
