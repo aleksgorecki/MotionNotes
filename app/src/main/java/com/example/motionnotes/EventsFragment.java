@@ -106,6 +106,17 @@ public class EventsFragment extends Fragment {
             }
         });
 
+        if (eventList.isEmpty()) {
+            cardView.setVisibility(View.GONE);
+            tvPlaceholder.setVisibility(View.VISIBLE);
+            ivPlaceholder.setVisibility(View.VISIBLE);
+        }
+        else {
+            cardView.setVisibility(View.VISIBLE);
+            tvPlaceholder.setVisibility(View.GONE);
+            ivPlaceholder.setVisibility(View.GONE);
+        }
+
         // Inflate the layout for this fragment
         return fragmentView;
     }

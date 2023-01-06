@@ -106,6 +106,17 @@ public class CheckListsFragment extends Fragment {
             Navigation.findNavController(CheckListsFragment.this.getActivity(), R.id.nav_host_fragment_activity_main).navigate(R.id.navigation_checklists_edit, bundle);
         });
 
+        if (checkListList.isEmpty()) {
+            cardView.setVisibility(View.GONE);
+            tvPlaceholder.setVisibility(View.VISIBLE);
+            ivPlaceholder.setVisibility(View.VISIBLE);
+        }
+        else {
+            cardView.setVisibility(View.VISIBLE);
+            tvPlaceholder.setVisibility(View.GONE);
+            ivPlaceholder.setVisibility(View.GONE);
+        }
+
         return fragmentView;
     }
 
