@@ -2,11 +2,22 @@ package com.example.motionnotes;
 
 import android.os.Bundle;
 
+import androidx.cardview.widget.CardView;
 import androidx.fragment.app.Fragment;
+import androidx.navigation.Navigation;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
+import android.widget.TextView;
+
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -14,6 +25,17 @@ import android.view.ViewGroup;
  * create an instance of this fragment.
  */
 public class EventsFragment extends Fragment {
+
+    private FloatingActionButton fabAdd;
+    private ImageView ivPlaceholder;
+    private TextView tvPlaceholder;
+    private CardView cardView;
+
+    private List<Event> eventList=new ArrayList<Event>();
+
+    private RecyclerView recyclerView;
+    private RecyclerView.Adapter mAdapter;
+    private RecyclerView.LayoutManager layoutManager;
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -56,9 +78,75 @@ public class EventsFragment extends Fragment {
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        View fragmentView=inflater.inflate(R.layout.fragment_events, container, false);
+        DataBaseHelper dataBaseHelper=new DataBaseHelper(fragmentView.getContext());
+        eventList=dataBaseHelper.getAllEvents();
+        //fillEventList();
+
+        ivPlaceholder = fragmentView.findViewById(R.id.iv_event_placeholder);
+        tvPlaceholder = fragmentView.findViewById(R.id.tv_event_placeholder);
+        cardView = fragmentView.findViewById(R.id.cardView_event);
+
+        recyclerView=fragmentView.findViewById(R.id.rv_list_events);
+        layoutManager=new LinearLayoutManager(fragmentView.getContext());
+        recyclerView.setLayoutManager(layoutManager);
+        mAdapter= new EventAdapter(eventList,EventsFragment.this.getActivity());
+        recyclerView.setAdapter(mAdapter);
+
+        fabAdd = fragmentView.findViewById(R.id.fab_add_event);
+        fabAdd.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                //GO TO EVENT EDIT
+                int eventID=-1;
+                Bundle bundle=new Bundle();
+                bundle.putInt("eventID",eventID);
+                Navigation.findNavController(EventsFragment.this.getActivity(),R.id.nav_host_fragment_activity_main).navigate(R.id.navigation_event_edit, bundle);
+            }
+        });
+
+        if (eventList.isEmpty()) {
+            cardView.setVisibility(View.GONE);
+            tvPlaceholder.setVisibility(View.VISIBLE);
+            ivPlaceholder.setVisibility(View.VISIBLE);
+        }
+        else {
+            cardView.setVisibility(View.VISIBLE);
+            tvPlaceholder.setVisibility(View.GONE);
+            ivPlaceholder.setVisibility(View.GONE);
+        }
+
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_events, container, false);
+        return fragmentView;
+    }
+
+    private void fillEventList(){
+        eventList.add(new Event(1,"Event 1 name","00/00/0000","00:00","Event 1 content",0));
+        eventList.add(new Event(2,"Event 2 name","00/00/0000","00:00","Event 2 content",1));
+        eventList.add(new Event(3,"Event 3 name","00/00/0000","00:00","Event 3 content",2));
+        eventList.add(new Event(4,"Event 4 name","00/00/0000","00:00","Event 4 content",3));
+        eventList.add(new Event(5,"Event 5 name","00/00/0000","00:00","Event 5 content",4));
+        eventList.add(new Event(6,"Event 6 name","00/00/0000","00:00","Event 6 content",5));
+        eventList.add(new Event(7,"Event 7 name","00/00/0000","00:00","Event 7 content",6));
+        eventList.add(new Event(8,"Event 8 name","00/00/0000","00:00","Event 8 content",7));
+        eventList.add(new Event(9,"Event 9 name","00/00/0000","00:00","Event 9 content",8));
+        eventList.add(new Event(10,"Event 10 name","00/00/0000","00:00","Event 10 content",9));
+    }
+
+    public void onResume() {
+        super.onResume();
+
+        if (eventList.isEmpty()) {
+            cardView.setVisibility(View.GONE);
+            tvPlaceholder.setVisibility(View.VISIBLE);
+            ivPlaceholder.setVisibility(View.VISIBLE);
+        }
+        else {
+            cardView.setVisibility(View.VISIBLE);
+            tvPlaceholder.setVisibility(View.GONE);
+            ivPlaceholder.setVisibility(View.GONE);
+        }
+
     }
 }

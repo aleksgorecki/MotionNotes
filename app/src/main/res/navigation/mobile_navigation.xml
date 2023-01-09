@@ -8,18 +8,57 @@
     <fragment
         android:id="@+id/navigation_checklists"
         android:name="com.example.motionnotes.CheckListsFragment"
-        android:label="Checklists"
-        tools:layout="@layout/fragment_check_lists" />
+        android:label="Listy"
+        tools:layout="@layout/fragment_check_lists" >
+        <action
+            android:id="@+id/action_navigation_checklists_to_navigation_checklists_edit"
+            app:destination="@id/navigation_checklists_edit" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/navigation_checklists_edit"
+        android:name="com.example.motionnotes.CheckListEditFragment"
+        android:label="Edycja listy"
+        tools:layout="@layout/fragment_check_list_edit" >
+        <argument
+            android:name="checkListId"
+            app:argType="integer"
+            android:defaultValue="-1" />
+    </fragment>
 
     <fragment
         android:id="@+id/navigation_notes"
         android:name="com.example.motionnotes.NotesFragment"
-        android:label="Notes"
-        tools:layout="@layout/fragment_notes" />
+        android:label="Notatki"
+        tools:layout="@layout/fragment_notes" >
+    </fragment>
+
+    <fragment
+        android:id="@+id/navigation_note_edit"
+        android:name="com.example.motionnotes.NoteEditFragment"
+        android:label="Edycja notatki"
+        tools:layout="@layout/fragment_note_edit" >
+        <argument
+            android:name="noteId"
+            app:argType="integer"
+            android:defaultValue="-1" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/navigation_note"
+        android:name="com.example.motionnotes.NoteFragment"
+        android:label="Note"
+        tools:layout="@layout/fragment_note" />
 
     <fragment
         android:id="@+id/navigation_events"
         android:name="com.example.motionnotes.EventsFragment"
-        android:label="Events"
-        tools:layout="@layout/fragment_events" />
+        android:label="Wydarzenia"
+        tools:layout="@layout/fragment_events" >
+    </fragment>
+    <fragment
+        android:id="@+id/navigation_event_edit"
+        android:name="com.example.motionnotes.EventEditFragment"
+        android:label="Edycja wydarzenia"
+        tools:layout="@layout/fragment_event_edit" />
 </navigation>

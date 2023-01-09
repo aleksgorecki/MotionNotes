@@ -141,10 +141,10 @@ public class DataBaseHelper extends SQLiteOpenHelper {
         Cursor result=db.rawQuery(queryString,null);
 
         if(result.moveToFirst()){
-            return true;
+            return false;
         }
         else {
-            return false;
+            return true;
         }
     }
 
@@ -245,15 +245,15 @@ public class DataBaseHelper extends SQLiteOpenHelper {
         Cursor result=db.rawQuery(queryString,null);
 
         if(result.moveToFirst()){
-            return true;
+            return false;
         }
         else {
-            return false;
+            return true;
         }
     }
 
     //CHECKLISTS
-    public boolean addCheckList(CheckList checkList){
+    public long addCheckList(CheckList checkList){
         SQLiteDatabase db=this.getWritableDatabase();
         ContentValues cv=new ContentValues();
 
@@ -261,12 +261,7 @@ public class DataBaseHelper extends SQLiteOpenHelper {
         cv.put("position", checkList.getPosition());
 
         long insert = db.insert("lists", null, cv);
-        if(insert == -1){
-            return false;
-        }
-        else {
-            return true;
-        }
+        return insert;
     }
 
     public List<CheckList> getAllCheckLists(){
@@ -364,10 +359,10 @@ public class DataBaseHelper extends SQLiteOpenHelper {
         Cursor result=db.rawQuery(queryString,null);
 
         if(result.moveToFirst()){
-            return true;
+            return false;
         }
         else {
-            return false;
+            return true;
         }
     }
 
@@ -378,7 +373,7 @@ public class DataBaseHelper extends SQLiteOpenHelper {
 
         cv.put("content", item.getContent());
         cv.put("is_done", item.isDone());
-        cv.put("position", item.getPosition());
+//        cv.put("position", item.getPosition());
         cv.put("list_id", item.getList_id());
 
         long insert = db.insert("items", null, cv);
@@ -404,10 +399,10 @@ public class DataBaseHelper extends SQLiteOpenHelper {
                 int id=result.getInt(0);
                 String content=result.getString(1);
                 Boolean isDone=result.getInt(2) == 1;
-                int position=result.getInt(3);
-                int list_id=result.getInt(4);
+//                int position=result.getInt(3);
+                int list_id=result.getInt(3);
 
-                returnList.add(new Item(id,content,isDone,position,list_id));
+                returnList.add(new Item(id,content,isDone, 0,list_id));
             } while (result.moveToNext());
         }
         else{
@@ -425,7 +420,7 @@ public class DataBaseHelper extends SQLiteOpenHelper {
 
         cv.put("content", item.getContent());
         cv.put("is_done", item.isDone());
-        cv.put("position", item.getPosition());
+//        cv.put("position", item.getPosition());
         cv.put("list_id", item.getList_id());
 
         int update=db.update("items",cv,"id = ?",new String[]{Integer.toString(item.getId())});
@@ -438,15 +433,20 @@ public class DataBaseHelper extends SQLiteOpenHelper {
 
     public boolean deleteItem(Item item){
         SQLiteDatabase db=this.getWritableDatabase();
-        String queryString="DELETE FROM item WHERE id = "+item.getId();
+        String queryString="DELETE FROM items WHERE id = "+item.getId();
 
         Cursor result=db.rawQuery(queryString,null);
 
         if(result.moveToFirst()){
-            return true;
-        }
-        else {
             return false;
         }
+        else {
+            return true;
+        }
+    }
+
+    public void deleteAllItems() {
+        SQLiteDatabase db=this.getWritableDatabase();
+        db.delete("items", "", new String[]{});
     }
 }

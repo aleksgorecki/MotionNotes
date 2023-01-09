@@ -18,6 +18,12 @@ public class Event {
     }
 
     public Event() {
+        id=-1;
+        name="";
+        date="00/00/0000";
+        hour="00:00";
+        content="";
+        position=0;
     }
 
     public int getId() {

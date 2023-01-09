@@ -2,14 +2,27 @@ package com.example.motionnotes;
 
 import android.os.Bundle;
 
+import androidx.cardview.widget.CardView;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.navigation.NavDirections;
+import androidx.navigation.Navigation;
+import androidx.navigation.fragment.NavHostFragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
-import android.widget.Toast;
+import android.widget.ImageView;
+import android.widget.TextView;
 
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.android.material.navigation.NavigationView;
+
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -19,9 +32,16 @@ import java.util.List;
  */
 public class NotesFragment extends Fragment {
 
-    private Button btn_addNote;
-    private Button btn_showNotes;
-    private Button btn_deleteNote;
+    private FloatingActionButton fabAdd;
+    private ImageView ivPlaceholder;
+    private TextView tvPlaceholder;
+    private CardView cardView;
+
+    private List<Note> noteList = new ArrayList<Note>();
+
+    private RecyclerView recyclerView;
+    private RecyclerView.Adapter mAdapter;
+    private RecyclerView.LayoutManager layoutManager;
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -65,29 +85,43 @@ public class NotesFragment extends Fragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-
         View fragmentView=inflater.inflate(R.layout.fragment_notes, container, false);
+        DataBaseHelper dataBaseHelper = new DataBaseHelper(fragmentView.getContext());
+        noteList=dataBaseHelper.getAllNotes();
+        //fillNoteList();
 
-        btn_addNote=fragmentView.findViewById(R.id.btn_addNote);
-        btn_addNote.setOnClickListener(new View.OnClickListener() {
+        ivPlaceholder = fragmentView.findViewById(R.id.iv_notes_placeholder);
+        tvPlaceholder = fragmentView.findViewById(R.id.tv_notes_placeholder);
+        cardView = fragmentView.findViewById(R.id.cardView_notes);
+
+        recyclerView=fragmentView.findViewById(R.id.rv_list_notes);
+        layoutManager = new LinearLayoutManager(fragmentView.getContext());
+        recyclerView.setLayoutManager(layoutManager);
+        mAdapter=new NoteAdapter(noteList, NotesFragment.this.getActivity());
+        recyclerView.setAdapter(mAdapter);
+
+        fabAdd = fragmentView.findViewById(R.id.fab_add_note);
+        fabAdd.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Note note;
-                try{
-                    note=new Note(-1,"Note content 2",1);
-                    Toast.makeText(fragmentView.getContext(),note.toString(), Toast.LENGTH_SHORT).show();
-                } catch (Exception e){
-                    note=new Note(-1,"error",-1);
-                    Toast.makeText(fragmentView.getContext(), "Error adding note",Toast.LENGTH_SHORT).show();
-                }
-
-                DataBaseHelper dataBaseHelper = new DataBaseHelper(fragmentView.getContext());
-                boolean success = dataBaseHelper.addNote(note);
-
-                Toast.makeText(fragmentView.getContext(),"Success= "+success,Toast.LENGTH_SHORT);
+                //GO TO NOTE_EDIT FRAGMENT
+                int noteId=-1;
+                Bundle bundle=new Bundle();
+                bundle.putInt("noteID",noteId);
+                Navigation.findNavController(NotesFragment.this.getActivity(),R.id.nav_host_fragment_activity_main).navigate(R.id.navigation_note_edit, bundle);
             }
         });
 
+        if (noteList.isEmpty()) {
+            cardView.setVisibility(View.GONE);
+            tvPlaceholder.setVisibility(View.VISIBLE);
+            ivPlaceholder.setVisibility(View.VISIBLE);
+        }
+        else {
+            cardView.setVisibility(View.VISIBLE);
+            tvPlaceholder.setVisibility(View.GONE);
+            ivPlaceholder.setVisibility(View.GONE);
+        }
         btn_showNotes=fragmentView.findViewById(R.id.btn_showAllNotes);
         btn_showNotes.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -112,5 +146,39 @@ public class NotesFragment extends Fragment {
 
         // Inflate the layout for this fragment
         return fragmentView;
+    }
+
+    public void onResume() {
+        super.onResume();
+
+        if (noteList.isEmpty()) {
+            cardView.setVisibility(View.GONE);
+            tvPlaceholder.setVisibility(View.VISIBLE);
+            ivPlaceholder.setVisibility(View.VISIBLE);
+        }
+        else {
+            cardView.setVisibility(View.VISIBLE);
+            tvPlaceholder.setVisibility(View.GONE);
+            ivPlaceholder.setVisibility(View.GONE);
+        }
+
+    }
+
+    void fillNoteList(){
+        noteList.add(new Note(1,"Note 1 text",0));
+        noteList.add(new Note(2,"Note 2 text",1));
+        noteList.add(new Note(3,"Note 3 text",2));
+        noteList.add(new Note(4,"Note 4 text",3));
+        noteList.add(new Note(5,"Note 5 text",4));
+        noteList.add(new Note(6,"Note 6 text",5));
+        noteList.add(new Note(7,"Note 7 text",6));
+        noteList.add(new Note(8,"Note 8 text",7));
+        noteList.add(new Note(9,"Note 9 text",8));
+        noteList.add(new Note(10,"Note 10 text",9));
+        noteList.add(new Note(11,"Note 11 text",10));
+        noteList.add(new Note(12,"Note 12 text",11));
+        noteList.add(new Note(13,"Note 13 text",12));
+        noteList.add(new Note(14,"Note 14 text",13));
+        noteList.add(new Note(15,"Note 15 text",14));
     }
 }
