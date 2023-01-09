@@ -1,9 +1,12 @@
 package com.example.motionnotes;
 
 import android.app.AlertDialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.os.Bundle;
 
+import androidx.activity.OnBackPressedCallback;
+import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.Navigation;
 
@@ -18,7 +21,9 @@ import android.widget.Toast;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.Date;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -35,6 +40,7 @@ public class EventEditFragment extends Fragment {
     EditText et_content;
     DataBaseHelper dataBaseHelper;
     Event event;
+    View fragmentView;
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -77,8 +83,38 @@ public class EventEditFragment extends Fragment {
     }
 
     @Override
+    public void onAttach(@NonNull Context context) {
+        super.onAttach(context);
+        OnBackPressedCallback callback =new OnBackPressedCallback(true) {
+            @Override
+            public void handleOnBackPressed() {
+                AlertDialog.Builder builder=new AlertDialog.Builder(fragmentView.getContext());
+                builder.setCancelable(true);
+                builder.setTitle("WYJŚCIE");
+                builder.setMessage("Nie zapisane zmiany zostaną utracone?");
+                builder.setPositiveButton("ROZUMIEM", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        setEnabled(false);
+                        requireActivity().onBackPressed();
+                    }
+                });
+                builder.setNegativeButton("WRÓĆ", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+
+                    }
+                });
+                AlertDialog dialog=builder.create();
+                dialog.show();
+            }
+        };
+        requireActivity().getOnBackPressedDispatcher().addCallback(this,callback);
+    }
+
+    @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View fragmentView=inflater.inflate(R.layout.fragment_event_edit, container, false);
+        fragmentView=inflater.inflate(R.layout.fragment_event_edit, container, false);
         dataBaseHelper=new DataBaseHelper(fragmentView.getContext());
 
         et_name=fragmentView.findViewById(R.id.et_name_event_edit);
@@ -176,6 +212,9 @@ public class EventEditFragment extends Fragment {
                         int hour=Integer.parseInt(clean.substring(0,2));
                         int minute=Integer.parseInt(clean.substring(2,4));
 
+                        if(hour>=24) hour=00;
+                        if(minute>59) minute=59;
+
                         clean=String.format("%02d%02d",hour, minute);
                     }
                     clean=String.format("%s:%s",clean.substring(0,2),clean.substring(2,4));
@@ -202,6 +241,12 @@ public class EventEditFragment extends Fragment {
             et_content.setText(event.getContent());
         } else {
             event=new Event();
+            SimpleDateFormat formatter=new SimpleDateFormat("dd/MM/yyyyHH:mm");
+            Date date=new Date(System.currentTimeMillis());
+            String data=formatter.format(date).substring(0,10);
+            String godzina=formatter.format(date).substring(10,15);
+            et_date.setText(data);
+            et_hour.setText(godzina);
         }
 
         fabDone=fragmentView.findViewById(R.id.fab_event_done);
@@ -213,6 +258,26 @@ public class EventEditFragment extends Fragment {
                 event.setDate(et_date.getText().toString());
                 event.setHour(et_hour.getText().toString());
                 event.setContent(et_content.getText().toString());
+
+                boolean nameGood=!event.getName().isEmpty();
+                boolean dateGood=event.getDate().charAt(9)>47 && event.getDate().charAt(9)<58;
+                boolean hourGood=event.getHour().charAt(4)>47 && event.getHour().charAt(4)<58;
+
+                if(!nameGood || !dateGood || !hourGood){
+                    String message="";
+                    if(!nameGood) message+="Nazwa wydarzenia nie może być pusta.\n";
+                    if(!dateGood) message+="Niepoprawna data.\n";
+                    if(!hourGood) message+="Niepoprawna godzina.";
+
+                    AlertDialog.Builder builder=new AlertDialog.Builder(fragmentView.getContext());
+                    builder.setCancelable(true);
+                    builder.setTitle("BŁĄD ZAPISU");
+                    builder.setMessage(message);
+                    builder.setPositiveButton("OK", null);
+                    AlertDialog dialog = builder.create();
+                    dialog.show();
+                    return;
+                }
 
                 if(event.getId()==-1 && dataBaseHelper.addEvent(event)){
                     Toast.makeText(fragmentView.getContext(),"WYDARZENIE UTWORZONE",Toast.LENGTH_SHORT).show();
@@ -236,7 +301,7 @@ public class EventEditFragment extends Fragment {
                 AlertDialog.Builder builder=new AlertDialog.Builder(fragmentView.getContext());
                 builder.setCancelable(true);
                 builder.setTitle("USUWANIE WYDARZENIA");
-                builder.setMessage("Napewno chcesz usunąć?");
+                builder.setMessage("Napewno chcesz usunąć to wydarzenie?");
                 builder.setPositiveButton("TAK", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {

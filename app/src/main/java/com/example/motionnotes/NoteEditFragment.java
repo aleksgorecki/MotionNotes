@@ -1,9 +1,12 @@
 package com.example.motionnotes;
 
 import android.app.AlertDialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.os.Bundle;
 
+import androidx.activity.OnBackPressedCallback;
+import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.Navigation;
 
@@ -28,6 +31,7 @@ public class NoteEditFragment extends Fragment {
     EditText et_editField;
     DataBaseHelper dataBaseHelper;
     Note note;
+    View fragmentView;
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -70,8 +74,38 @@ public class NoteEditFragment extends Fragment {
     }
 
     @Override
+    public void onAttach(@NonNull Context context) {
+        super.onAttach(context);
+        OnBackPressedCallback callback =new OnBackPressedCallback(true) {
+            @Override
+            public void handleOnBackPressed() {
+                AlertDialog.Builder builder=new AlertDialog.Builder(fragmentView.getContext());
+                builder.setCancelable(true);
+                builder.setTitle("WYJŚCIE");
+                builder.setMessage("Nie zapisane zmiany zostaną utracone?");
+                builder.setPositiveButton("ROZUMIEM", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        setEnabled(false);
+                        requireActivity().onBackPressed();
+                    }
+                });
+                builder.setNegativeButton("WRÓĆ", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+
+                    }
+                });
+                AlertDialog dialog=builder.create();
+                dialog.show();
+            }
+        };
+        requireActivity().getOnBackPressedDispatcher().addCallback(this,callback);
+    }
+
+    @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View fragmentView=inflater.inflate(R.layout.fragment_note_edit, container, false);
+        fragmentView=inflater.inflate(R.layout.fragment_note_edit, container, false);
         dataBaseHelper = new DataBaseHelper(fragmentView.getContext());
 
         if(getArguments().getInt("noteID")!=-1){
@@ -120,7 +154,7 @@ public class NoteEditFragment extends Fragment {
                 AlertDialog.Builder builder=new AlertDialog.Builder(fragmentView.getContext());
                 builder.setCancelable(true);
                 builder.setTitle("USUWANIE NOTATKI");
-                builder.setMessage("Napewno chcesz usunąć?");
+                builder.setMessage("Napewno chcesz usunąć tą notatkę?");
                 builder.setPositiveButton("TAK", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {

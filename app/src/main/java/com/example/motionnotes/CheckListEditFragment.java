@@ -1,8 +1,12 @@
 package com.example.motionnotes;
 
 import android.app.AlertDialog;
+import android.content.Context;
+import android.content.DialogInterface;
 import android.os.Bundle;
 
+import androidx.activity.OnBackPressedCallback;
+import androidx.annotation.NonNull;
 import androidx.cardview.widget.CardView;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.fragment.app.Fragment;
@@ -43,6 +47,7 @@ public class CheckListEditFragment extends Fragment {
     ImageView ivPlaceholder;
     TextView tvPlaceholder;
     CardView cardViewItems;
+    View fragmentView;
     private ItemAdapter mAdapter;
     private RecyclerView.LayoutManager layoutManager;
     private ArrayList<Item> itemsToDelete = new ArrayList<>();
@@ -89,10 +94,39 @@ public class CheckListEditFragment extends Fragment {
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
+    public void onAttach(@NonNull Context context) {
+        super.onAttach(context);
+        OnBackPressedCallback callback =new OnBackPressedCallback(true) {
+            @Override
+            public void handleOnBackPressed() {
+                AlertDialog.Builder builder=new AlertDialog.Builder(fragmentView.getContext());
+                builder.setCancelable(true);
+                builder.setTitle("WYJŚCIE");
+                builder.setMessage("Nie zapisane zmiany zostaną utracone?");
+                builder.setPositiveButton("ROZUMIEM", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        setEnabled(false);
+                        requireActivity().onBackPressed();
+                    }
+                });
+                builder.setNegativeButton("WRÓĆ", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+
+                    }
+                });
+                AlertDialog dialog=builder.create();
+                dialog.show();
+            }
+        };
+        requireActivity().getOnBackPressedDispatcher().addCallback(this,callback);
+    }
+
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View fragmentView =  inflater.inflate(R.layout.fragment_check_list_edit, container, false);
+        fragmentView =  inflater.inflate(R.layout.fragment_check_list_edit, container, false);
 
         et_checkListName = fragmentView.findViewById(R.id.et_check_list_name);
         recyclerView = fragmentView.findViewById(R.id.rv_items);
@@ -130,9 +164,9 @@ public class CheckListEditFragment extends Fragment {
             if (checkList.getName().isEmpty()) {
                 AlertDialog.Builder builder=new AlertDialog.Builder(fragmentView.getContext());
                 builder.setCancelable(true);
-                builder.setTitle("Błąd zapisu");
+                builder.setTitle("BŁĄD ZAPISU");
                 builder.setMessage("Nazwa listy nie może być pusta.");
-                builder.setPositiveButton("Ok", null);
+                builder.setPositiveButton("OK", null);
                 AlertDialog dialog = builder.create();
                 dialog.show();
                 return;
@@ -147,7 +181,7 @@ public class CheckListEditFragment extends Fragment {
                     item.setList_id(checkList.getId());
                     dataBaseHelper.addItem(item);
                 }
-                Toast.makeText(fragmentView.getContext(),"Lista utworzona", Toast.LENGTH_SHORT).show();
+                Toast.makeText(fragmentView.getContext(),"LISTA UTWORZONA", Toast.LENGTH_SHORT).show();
                 Navigation.findNavController(CheckListEditFragment.this.getActivity(), R.id.nav_host_fragment_activity_main).navigate(R.id.navigation_checklists);
             }
             else if (dataBaseHelper.updateCheckList(checkList)){
@@ -166,11 +200,11 @@ public class CheckListEditFragment extends Fragment {
                 for (Item item: itemsToDelete) {
                     dataBaseHelper.deleteItem(item);
                 }
-                Toast.makeText(fragmentView.getContext(),"Zmiany zapisane", Toast.LENGTH_SHORT).show();
+                Toast.makeText(fragmentView.getContext(),"ZMIANY ZAPISANE", Toast.LENGTH_SHORT).show();
                 Navigation.findNavController(CheckListEditFragment.this.getActivity(), R.id.nav_host_fragment_activity_main).navigate(R.id.navigation_checklists);
             }
             else {
-                Toast.makeText(fragmentView.getContext(),"Zapis nieudany", Toast.LENGTH_SHORT).show();
+                Toast.makeText(fragmentView.getContext(),"ZAPIS NIEUDANY", Toast.LENGTH_SHORT).show();
             }
         });
 
@@ -200,9 +234,9 @@ public class CheckListEditFragment extends Fragment {
 
             AlertDialog.Builder builder = new AlertDialog.Builder(fragmentView.getContext());
             builder.setCancelable(true);
-            builder.setTitle("Usuwanie listy");
+            builder.setTitle("USUWANIE LISTY");
             builder.setMessage("Czy na pewno chcesz usunąć tę listę?");
-            builder.setPositiveButton("Tak", (dialogInterface, i) -> {
+            builder.setPositiveButton("TAK", (dialogInterface, i) -> {
                 if (checkList.getId() != -1) {
                     if (dataBaseHelper.deleteCheckList(checkList)) {
                         for (Item item : checkList.getItems()) {
@@ -218,7 +252,7 @@ public class CheckListEditFragment extends Fragment {
                     Navigation.findNavController(CheckListEditFragment.this.getActivity(), R.id.nav_host_fragment_activity_main).navigate(R.id.navigation_checklists);
                 }
             });
-            builder.setNegativeButton("Nie", null);
+            builder.setNegativeButton("NIE", null);
             AlertDialog dialog = builder.create();
             dialog.show();
         });
