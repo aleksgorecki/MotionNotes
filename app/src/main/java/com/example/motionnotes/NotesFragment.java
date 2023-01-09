@@ -21,6 +21,10 @@ import android.widget.TextView;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.navigation.NavigationView;
 
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -141,6 +145,20 @@ public class NotesFragment extends Fragment {
             ivPlaceholder.setVisibility(View.GONE);
         }
 
+        EventBus.getDefault().register(this);
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        EventBus.getDefault().unregister(this);
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onMotionDetectedEvent(MotionDetector.MotionDetectedEvent event) {
+        if (event.detectedMotion.equals(MotionDetector.MotionClass.YPOS)) {
+            fabAdd.performClick();
+        }
     }
 
     void fillNoteList(){

@@ -16,6 +16,10 @@ import android.widget.TextView;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -134,7 +138,20 @@ public class CheckListsFragment extends Fragment {
             tvPlaceholder.setVisibility(View.GONE);
             ivPlaceholder.setVisibility(View.GONE);
         }
+        EventBus.getDefault().register(this);
+    }
 
+    @Override
+    public void onPause() {
+        super.onPause();
+        EventBus.getDefault().unregister(this);
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onMotionDetectedEvent(MotionDetector.MotionDetectedEvent event) {
+        if (event.detectedMotion.equals(MotionDetector.MotionClass.YPOS)) {
+            fabAdd.performClick();
+        }
     }
 
     //    public void fillCheckListList() {

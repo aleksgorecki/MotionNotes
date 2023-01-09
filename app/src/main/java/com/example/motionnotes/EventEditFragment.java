@@ -21,6 +21,10 @@ import android.widget.Toast;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
+
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
@@ -335,5 +339,27 @@ public class EventEditFragment extends Fragment {
 
         // Inflate the layout for this fragment
         return fragmentView;
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        EventBus.getDefault().unregister(this);
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        EventBus.getDefault().register(this);
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onMotionDetectedEvent(MotionDetector.MotionDetectedEvent event) {
+        if (event.detectedMotion.equals(MotionDetector.MotionClass.ZNEG)) {
+            fabDelete.performClick();
+        }
+        else if (event.detectedMotion.equals(MotionDetector.MotionClass.ZPOS)) {
+            fabDone.performClick();
+        }
     }
 }
