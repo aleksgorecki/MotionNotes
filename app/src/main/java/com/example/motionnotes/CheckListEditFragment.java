@@ -172,6 +172,7 @@ public class CheckListEditFragment extends Fragment {
                 builder.setMessage("Nazwa listy nie może być pusta.");
                 builder.setPositiveButton("OK", null);
                 AlertDialog dialog = builder.create();
+                ((MainActivity) getActivity()).setLastCreatedDialog(dialog);
                 dialog.show();
                 return;
             }
@@ -258,6 +259,7 @@ public class CheckListEditFragment extends Fragment {
             });
             builder.setNegativeButton("NIE", null);
             AlertDialog dialog = builder.create();
+            ((MainActivity) getActivity()).setLastCreatedDialog(dialog);
             dialog.show();
         });
 

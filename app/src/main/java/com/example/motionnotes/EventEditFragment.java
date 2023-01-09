@@ -279,6 +279,7 @@ public class EventEditFragment extends Fragment {
                     builder.setMessage(message);
                     builder.setPositiveButton("OK", null);
                     AlertDialog dialog = builder.create();
+                    ((MainActivity) getActivity()).setLastCreatedDialog(dialog);
                     dialog.show();
                     return;
                 }
@@ -333,6 +334,7 @@ public class EventEditFragment extends Fragment {
                     }
                 });
                 AlertDialog dialog=builder.create();
+                ((MainActivity) getActivity()).setLastCreatedDialog(dialog);
                 dialog.show();
             }
         });

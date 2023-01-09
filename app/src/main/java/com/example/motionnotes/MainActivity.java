@@ -48,6 +48,7 @@ public class MainActivity extends AppCompatActivity {
         add(R.id.navigation_events);
     }};
     private BottomNavigationView navView;
+    private AlertDialog lastCreatedDialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -114,15 +115,29 @@ public class MainActivity extends AppCompatActivity {
         int selectedTabIndex = tabIndexMapping.get(selectedTabId);
 
         if (event.detectedMotion.equals(MotionDetector.MotionClass.XNEG)) {
-            int nextTabId = bottomNavigationTabs.get(Math.floorMod(selectedTabIndex - 1, 3));
-            navView.setSelectedItemId(nextTabId);
+            if (lastCreatedDialog != null && lastCreatedDialog.isShowing()) {
+                lastCreatedDialog.getButton(AlertDialog.BUTTON_NEGATIVE).performClick();
+            }
+            else {
+                int nextTabId = bottomNavigationTabs.get(Math.floorMod(selectedTabIndex - 1, 3));
+                navView.setSelectedItemId(nextTabId);
+            }
         }
         else if (event.detectedMotion.equals(MotionDetector.MotionClass.XPOS)) {
-            int nextTabId = bottomNavigationTabs.get(Math.floorMod(selectedTabIndex + 1, 3));
-            navView.setSelectedItemId(nextTabId);
+            if (lastCreatedDialog != null && lastCreatedDialog.isShowing()) {
+                lastCreatedDialog.getButton(AlertDialog.BUTTON_POSITIVE).performClick();
+            }
+            else {
+                int nextTabId = bottomNavigationTabs.get(Math.floorMod(selectedTabIndex + 1, 3));
+                navView.setSelectedItemId(nextTabId);
+            }
         }
         else if (event.detectedMotion.equals(MotionDetector.MotionClass.YNEG)) {
             onBackPressed();
         }
+    }
+
+    public void setLastCreatedDialog(AlertDialog lastCreatedDialog) {
+        this.lastCreatedDialog = lastCreatedDialog;
     }
 }

@@ -101,6 +101,7 @@ public class NoteEditFragment extends Fragment {
                     }
                 });
                 AlertDialog dialog=builder.create();
+                ((MainActivity) getActivity()).setLastCreatedDialog(dialog);
                 dialog.show();
             }
         };
@@ -185,7 +186,8 @@ public class NoteEditFragment extends Fragment {
 
                     }
                 });
-                AlertDialog dialog=builder.create();
+                AlertDialog dialog = builder.create();
+                ((MainActivity) getActivity()).setLastCreatedDialog(dialog);
                 dialog.show();
             }
         });
