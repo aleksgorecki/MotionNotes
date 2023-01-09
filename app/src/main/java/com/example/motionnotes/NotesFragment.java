@@ -122,27 +122,6 @@ public class NotesFragment extends Fragment {
             tvPlaceholder.setVisibility(View.GONE);
             ivPlaceholder.setVisibility(View.GONE);
         }
-        btn_showNotes=fragmentView.findViewById(R.id.btn_showAllNotes);
-        btn_showNotes.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                DataBaseHelper dataBaseHelper = new DataBaseHelper(fragmentView.getContext());
-                List<Note> allNotes=dataBaseHelper.getAllNotes();
-                Note testNote=dataBaseHelper.getNote(2);
-                Toast.makeText(fragmentView.getContext(),testNote.toString(),Toast.LENGTH_SHORT).show();
-            }
-        });
-
-        btn_deleteNote=fragmentView.findViewById(R.id.btn_addNote);
-        btn_deleteNote.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Note note=new Note(1,"sadas",0);
-                DataBaseHelper dataBaseHelper = new DataBaseHelper(fragmentView.getContext());
-                Boolean success=dataBaseHelper.deleteNote(note);
-                Toast.makeText(fragmentView.getContext(),"Success= "+success,Toast.LENGTH_SHORT);
-            }
-        });
 
         // Inflate the layout for this fragment
         return fragmentView;
