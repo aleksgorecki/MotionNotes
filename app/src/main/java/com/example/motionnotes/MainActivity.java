@@ -1,10 +1,12 @@
 package com.example.motionnotes;
 
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.ImageView;
 import android.widget.Toast;
 
@@ -133,7 +135,7 @@ public class MainActivity extends AppCompatActivity {
             }
         }
         else if (event.detectedMotion.equals(MotionDetector.MotionClass.YNEG)) {
-            onBackPressed();
+            getOnBackPressedDispatcher().onBackPressed();
         }
     }
 

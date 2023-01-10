@@ -121,6 +121,7 @@ public class CheckListEditFragment extends Fragment {
                     }
                 });
                 AlertDialog dialog=builder.create();
+                ((MainActivity) getActivity()).setLastCreatedDialog(dialog);
                 dialog.show();
             }
         };

@@ -110,6 +110,7 @@ public class EventEditFragment extends Fragment {
                     }
                 });
                 AlertDialog dialog=builder.create();
+                ((MainActivity) getActivity()).setLastCreatedDialog(dialog);
                 dialog.show();
             }
         };
