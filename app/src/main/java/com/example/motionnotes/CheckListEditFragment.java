@@ -26,6 +26,10 @@ import android.widget.Toast;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.stream.Collectors;
@@ -117,6 +121,7 @@ public class CheckListEditFragment extends Fragment {
                     }
                 });
                 AlertDialog dialog=builder.create();
+                ((MainActivity) getActivity()).setLastCreatedDialog(dialog);
                 dialog.show();
             }
         };
@@ -168,6 +173,7 @@ public class CheckListEditFragment extends Fragment {
                 builder.setMessage("Nazwa listy nie może być pusta.");
                 builder.setPositiveButton("OK", null);
                 AlertDialog dialog = builder.create();
+                ((MainActivity) getActivity()).setLastCreatedDialog(dialog);
                 dialog.show();
                 return;
             }
@@ -254,6 +260,7 @@ public class CheckListEditFragment extends Fragment {
             });
             builder.setNegativeButton("NIE", null);
             AlertDialog dialog = builder.create();
+            ((MainActivity) getActivity()).setLastCreatedDialog(dialog);
             dialog.show();
         });
 
@@ -279,6 +286,7 @@ public class CheckListEditFragment extends Fragment {
         }
 
         switchVisibilities();
+        EventBus.getDefault().register(this);
     }
 
     public void switchVisibilities() {
@@ -293,4 +301,29 @@ public class CheckListEditFragment extends Fragment {
             cardViewItems.setVisibility(View.VISIBLE);
         }
     }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        EventBus.getDefault().unregister(this);
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onMotionDetectedEvent(MotionDetector.MotionDetectedEvent event) {
+        if (event.detectedMotion.equals(MotionDetector.MotionClass.YPOS)) {
+            fabAddItem.performClick();
+        }
+        else if (event.detectedMotion.equals(MotionDetector.MotionClass.ZNEG)) {
+            if (fabDeleteItem.getVisibility() == View.VISIBLE) {
+                fabDeleteItem.performClick();
+            }
+            else {
+                fabDelete.performClick();
+            }
+        }
+        else if (event.detectedMotion.equals(MotionDetector.MotionClass.ZPOS)) {
+            fabDone.performClick();
+        }
+    }
+
 }

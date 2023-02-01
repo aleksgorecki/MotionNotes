@@ -1,10 +1,14 @@
 package com.example.motionnotes;
 
+import android.app.Activity;
+import android.app.AlertDialog;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.ImageView;
+import android.widget.Toast;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
@@ -22,9 +26,31 @@ import androidx.navigation.ui.NavigationUI;
 import com.example.motionnotes.databinding.ActivityMainBinding;
 import com.google.android.material.navigation.NavigationBarView;
 
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+
 public class MainActivity extends AppCompatActivity {
 
     private ActivityMainBinding binding;
+    private MotionDetector motionDetector;
+    private Toast motionDetectedToast;
+    private HashMap<Integer, Integer> tabIndexMapping = new HashMap<Integer, Integer>()  {{
+        put(R.id.navigation_checklists, 0);
+        put(R.id.navigation_notes, 1);
+        put(R.id.navigation_events, 2);
+    }};
+    private ArrayList<Integer> bottomNavigationTabs = new ArrayList<Integer>() {{
+        add(R.id.navigation_checklists);
+        add(R.id.navigation_notes);
+        add(R.id.navigation_events);
+    }};
+    private BottomNavigationView navView;
+    private AlertDialog lastCreatedDialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -33,7 +59,7 @@ public class MainActivity extends AppCompatActivity {
         binding = ActivityMainBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
-        BottomNavigationView navView = findViewById(R.id.nav_view);
+        navView = findViewById(R.id.nav_view);
         // Passing each menu ID as a set of Ids because each
         // menu should be considered as top level destinations.
         AppBarConfiguration appBarConfiguration = new AppBarConfiguration.Builder(R.id.navigation_checklists, R.id.navigation_notes, R.id.navigation_events).build();
@@ -61,6 +87,59 @@ public class MainActivity extends AppCompatActivity {
         });
 
         NavigationUI.setupWithNavController(binding.navView, navController);
+
+        motionDetector = new MotionDetector(this);
     }
 
+    @Override
+    protected void onPause() {
+        super.onPause();
+        EventBus.getDefault().unregister(this);
+        motionDetector.unregister();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        EventBus.getDefault().register(this);
+        motionDetector.registerSensorListener();
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onMotionDetectedEvent(MotionDetector.MotionDetectedEvent event) {
+        if (motionDetectedToast != null) {
+            motionDetectedToast.cancel();
+        }
+        motionDetectedToast = Toast.makeText(this, "Wykryto ruch: " + event.detectedMotion.toString(), Toast.LENGTH_SHORT);
+        motionDetectedToast.show();
+
+        int selectedTabId = navView.getSelectedItemId();
+        int selectedTabIndex = tabIndexMapping.get(selectedTabId);
+
+        if (event.detectedMotion.equals(MotionDetector.MotionClass.XNEG)) {
+            if (lastCreatedDialog != null && lastCreatedDialog.isShowing()) {
+                lastCreatedDialog.getButton(AlertDialog.BUTTON_NEGATIVE).performClick();
+            }
+            else {
+                int nextTabId = bottomNavigationTabs.get(Math.floorMod(selectedTabIndex - 1, 3));
+                navView.setSelectedItemId(nextTabId);
+            }
+        }
+        else if (event.detectedMotion.equals(MotionDetector.MotionClass.XPOS)) {
+            if (lastCreatedDialog != null && lastCreatedDialog.isShowing()) {
+                lastCreatedDialog.getButton(AlertDialog.BUTTON_POSITIVE).performClick();
+            }
+            else {
+                int nextTabId = bottomNavigationTabs.get(Math.floorMod(selectedTabIndex + 1, 3));
+                navView.setSelectedItemId(nextTabId);
+            }
+        }
+        else if (event.detectedMotion.equals(MotionDetector.MotionClass.YNEG)) {
+            getOnBackPressedDispatcher().onBackPressed();
+        }
+    }
+
+    public void setLastCreatedDialog(AlertDialog lastCreatedDialog) {
+        this.lastCreatedDialog = lastCreatedDialog;
+    }
 }
