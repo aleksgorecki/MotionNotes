@@ -2,7 +2,7 @@
 
 A proof of concept Android application, meant to provide an alternative method of human-computer interaction.
 
-This method is based on commands given by tilting/pushing the device in 3 axes (and 2 directions within them). This allows for partial control of the application without the need to touch the smartphone's screen. A 'demo' of this feature is shown in [Alternative interaction (motion gestures)](#alternative-interaction-motion-gestures) section.
+This method is based on commands given by tilting/pushing the device in 3 axes (and 2 directions within them). This allows for partial control of the application without the need to touch the smartphone's screen. A 'demo' of this feature is shown in [Motion gestures](#motion-gestures) section.
 
 This application is meant to be a combitaion of a digital notepad, journal and a diary. Users may store their entries in three predefined formats:
 - lists (checklists)
@@ -22,7 +22,7 @@ The application's UI text is in Polish.
     - [Checklists](#checklists)
     - [Notes](#notes)
     - [Events](#events)
-  - [Alternative interaction (motion gestures)](#alternative-interaction-motion-gestures)
+  - [Motion gestures](#motion-gestures)
     - [XPOS (XPOSITIVE) - Moving the phone to the right](#xpos-xpositive---moving-the-phone-to-the-right)
     - [XNEG (XNEGATIVE) - Moving the phone to the left](#xneg-xnegative---moving-the-phone-to-the-left)
     - [YPOSITIVE (YPOS) - Moving the phone up](#ypositive-ypos---moving-the-phone-up)
@@ -80,7 +80,8 @@ The event editing view consists of three fields:
 
  
 <img src="readme/../readmeimg/eventlist.jpg" width=200>
-### Alternative interaction (motion gestures)
+
+### Motion gestures
 
 <img src="readmeimg/gifnotes.gif"/>
 
